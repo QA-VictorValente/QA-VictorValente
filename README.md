@@ -43,6 +43,8 @@ Atuo garantindo a qualidade de aplicações através da elaboração de cenário
 - Cypress
 - Robot Framework
 - Selenium
+- Playwright 
+
 
 ### APIs
 
