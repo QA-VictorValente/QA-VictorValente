@@ -125,11 +125,26 @@
 
 ---
 
-### 🟩 Gráfico de Contribuições & Atividade Contínua
+### 🏙️ DevCity 3D: A Metrópole dos Commits
 
 <div align="center">
-  <p><sub>Atualizado dinamicamente em tempo real a cada commit realizado ⚡</sub></p>
-  <img src="https://ghchart.rshah.org/00F0FF/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
+
+> *"Cada commit ergue um andar. Cada push constrói uma avenida na metrópole do código."* 🏢⚡
+
+<p align="center">
+  <a href="https://honzaap.github.io/GithubCity/?name=QA-VictorValente" target="_blank" title="Clique para explorar sua cidade 3D interativa gerada a partir dos seus commits">
+    <img src="./profile-3d-contrib/profile-night-view.svg" onerror="this.onerror=null; this.src='https://ghchart.rshah.org/00F0FF/QA-VictorValente';" alt="3D Contribution City - Victor Valente" width="100%" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://honzaap.github.io/GithubCity/?name=QA-VictorValente" target="_blank">
+    <img src="https://img.shields.io/badge/🏙️%20Explorar%20Minha%20Cidade%203D%20(WebGL)-00F0FF?style=for-the-badge&logoColor=000&labelColor=0d1117" alt="Explorar Cidade 3D" />
+  </a>
+</p>
+
+<sub>💡 Dica: No GitCity você pode explorar a cidade em 3D, ver prédios baseados na altura dos seus commits e até dirigir pelas ruas!</sub>
+
 </div>
 
 ---
