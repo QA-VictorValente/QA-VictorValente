@@ -1,12 +1,12 @@
 <div align="center">
 
-  <!-- Header Banner / Typing SVG Animado -->
+  <!-- Header Banner / Typing SVG Formal & Clean -->
   <a href="https://github.com/QA-VictorValente">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&pause=1000&color=00F0FF&center=true&vCenter=true&width=680&lines=%E2%88%9E+Victor+Valente+%7C+QA+Engineer;Automated+%26+Manual+Testing;API+Contracts%2C+E2E+%26+Performance+k6;Zero+Bugs.+High+Reliability." alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Plus+Jakarta+Sans&weight=700&size=24&pause=1000&color=0284C7&center=true&vCenter=true&width=680&lines=%E2%88%9E+Victor+Valente+%7C+Analista+de+Qualidade+de+Software;Garantia+de+Qualidade+%26+Automa%C3%A7%C3%A3o+de+Testes;Valida%C3%A7%C3%A3o+de+APIs%2C+E2E+%26+Performance;Zero+Bugs.+Alta+Confiabilidade." alt="Typing SVG" />
   </a>
 
   <p align="center">
-    <b>Analista de Qualidade de Software (QA Full / Automação)</b> com mais de <b>4 anos de experiência</b> garantindo robustez, confiabilidade e performance de aplicações críticas através de testes contínuos e automação de ponta a ponta.
+    <b>Analista de Qualidade de Software (QA Full / Automação)</b> com mais de <b>4 anos de experiência</b> garantindo robustez, confiabilidade e estabilidade de aplicações críticas através de testes contínuos e arquiteturas modernas de automação.
   </p>
 
   <p align="center">
@@ -14,7 +14,7 @@
       <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
     </a>
     <a href="mailto:victorvalente456@gmail.com?subject=Contato%20Profissional%20-%20QA%20Victor%20Valente">
-      <img src="https://img.shields.io/badge/Email-00F0FF?style=for-the-badge&logo=gmail&logoColor=000&labelColor=0d1117" alt="Email" />
+      <img src="https://img.shields.io/badge/Email-0284C7?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
     </a>
   </p>
 
@@ -22,22 +22,21 @@
 
 ---
 
-### ⚡ `whoami --summary`
+### ⚡ Resumo Profissional
 
-```bash
-> victor.profile()
+```json
 {
-  "name": "Victor Valente",
-  "role": "QA Analyst & Test Automation Engineer",
-  "experience": "4+ years",
-  "specialties": [
-    "Web E2E Automation (Playwright, Cypress, Selenium)",
-    "API Contract & Functional Testing (Zod, TypeScript, Postman)",
-    "Performance & Load Testing (Grafana k6)",
-    "SQL Data Validation (PostgreSQL, Oracle)",
-    "ISTQB CTFL Certified Preparation"
+  "nome": "Victor Valente",
+  "cargo": "Analista de Qualidade de Software (QA)",
+  "experiencia": "4+ anos",
+  "especialidades": [
+    "Automação Web E2E (Playwright, Cypress, Selenium)",
+    "Validação e Contratos de APIs (Zod, TypeScript, Postman)",
+    "Testes de Performance e Carga (Grafana k6)",
+    "Auditoria e Validação em Banco de Dados (PostgreSQL, Oracle)",
+    "Preparação Oficial ISTQB CTFL v4.0.1"
   ],
-  "mission": "Garantir a máxima maturidade de entrega, prevenindo falhas antes de chegarem à produção."
+  "proposito": "Prevenir defeitos antes do ambiente produtivo e elevar a maturidade técnica de engenharia."
 }
 ```
 
@@ -54,7 +53,7 @@
 
 ---
 
-### 🛠️ Stack Tecnológica & Ferramentas
+### 🛠️ Tecnologias & Ferramentas
 
 <div align="center">
 
@@ -114,59 +113,54 @@
 
 <div align="center">
 
-  <img height="165em" src="https://github-readme-stats.vercel.app/api?username=QA-VictorValente&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&border_color=00F0FF&border_radius=8" alt="GitHub Stats" />
-  <img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=QA-VictorValente&layout=compact&theme=tokyonight&border_color=00F0FF&border_radius=8" alt="Top Languages" />
+  <img height="165em" src="https://github-readme-stats.vercel.app/api?username=QA-VictorValente&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&border_color=0284c7&border_radius=8" alt="GitHub Stats" />
+  <img height="165em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=QA-VictorValente&layout=compact&theme=tokyonight&border_color=0284c7&border_radius=8" alt="Top Languages" />
 
   <br/><br/>
 
-  <img height="155em" src="https://streak-stats.demolab.com?user=QA-VictorValente&theme=tokyonight&border=00F0FF&border_radius=8" alt="GitHub Streak" />
+  <img height="155em" src="https://streak-stats.demolab.com?user=QA-VictorValente&theme=tokyonight&border_color=0284c7&border_radius=8" alt="GitHub Streak" />
 
 </div>
 
 ---
 
-### 🏙️ QA DevCity 3D: A Metrópole dos Commits
+### 🏙️ QA City: Metrópole da Qualidade
 
 <div align="center">
 
-> *"Cada commit ergue um andar. Cada push constrói uma avenida na metrópole de Quality Assurance."* 🏢⚡
+> *"Cada dia é um lote, cada commit constrói a cidade da engenharia de software."* 🏢🌿
 
 <p align="center">
-  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank" title="Clique para entrar na cidade 3D interativa">
-    <img src="assets/devcity-banner.svg" alt="QA DevCity 3D - Victor Valente" width="100%" />
+  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank" title="Clique para explorar a cidade interativa 3D">
+    <img src="assets/devcity-banner.svg" alt="QA City - Victor Valente" width="100%" />
   </a>
 </p>
 
 <p align="center">
   <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank">
-    <img src="https://img.shields.io/badge/🎮%20ENTRAR%20NA%20CIDADE%203D%20INTERATIVA%20(WEBGL)-00F0FF?style=for-the-badge&logoColor=000&labelColor=0d1117" alt="Entrar na Cidade 3D" />
+    <img src="https://img.shields.io/badge/🏙️%20EXPLORAR%20CIDADE%20INTERATIVA%203D-0284C7?style=for-the-badge&logoColor=white" alt="Explorar Cidade 3D" />
   </a>
 </p>
 
 </div>
 
-#### 🕹️ O que você encontra na simulação 3D:
-- 🚗 **Pilote um Cyber Rover pelas avenidas** ou aperte `V` para **decolar um Cyber Jet e sobrevoar os prédios**!
-- 🏢 **Torres Tecnológicas Únicas:**
-  - **Playwright Citadel**: Arquitetura hexagonal com anéis de neon, representando testes E2E com Page Object Model (POM).
-  - **Cypress Matrix Hub**: Cubo tecnológico com feixes de dados, focado em App Actions e Network Mocking.
-  - **k6 Stress Reactor**: Reator de energia pulsante dedicado a testes de estresse, carga e SLAs de latência.
-  - **API Contract Spire**: Agulha futurista com antenas de transmissão de validação de schemas Zod e REST.
-  - **ISTQB CTFL Academy**: Monumento central à maturidade de Qualidade e governança de software.
-- 📡 **HUD Holográfico por Proximação:** Ao se aproximar de qualquer edifício com o carro ou o avião, um painel holográfico se abre na tela revelando métricas de teste, tecnologias utilizadas e botão direto para o código no GitHub.
-- 🏘️ **Casas de Commits Diários:** Quadras inteiras formadas por módulos residenciais onde a altura e a cor de cada casa representam a intensidade de commits de cada dia do ano!
+#### 🏛️ Arquitetura Visual dos Lotes:
+- 🌳 **Praça com Jardim (0 Commits):** Lote arborizado com gramado, caminho de pedras e bancos (dia de descanso/planejamento).
+- 🏡 **Casa com Telhado Inclinado (1 a 3 Commits):** Residência moderna com telhado gabled, chaminé e jardim frontal.
+- 🏢 **Edifício Comercial com Terraço (4 a 7 Commits):** Prédio corporativo com fachada envidraçada e jardim suspenso no topo.
+- 🏛️ **Arranha-Céu com Heliponto (8+ Commits):** Torre monumental icônica com heliponto, antena de sinalização e alta produtividade.
 
 ---
 
 ### 🟩 Histórico Contínuo de Commits (365 Dias)
 
 <div align="center">
-  <img src="https://ghchart.rshah.org/00F0FF/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
+  <img src="https://ghchart.rshah.org/0284c7/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
   <p><sub>Atualizado dinamicamente em tempo real a cada novo commit realizado. ⚡</sub></p>
 </div>
 
 ---
 
 <div align="center">
-  <sub>Construído com foco em qualidade contínua e tolerância zero a falhas. 🚀</sub>
+  <sub>Construído com foco em qualidade contínua, governança técnica e tolerância zero a falhas. 🚀</sub>
 </div>

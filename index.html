@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>QA DevCity // Cidade dos Commits - Victor Valente</title>
+  <title>QA City // Portfólio de Qualidade - Victor Valente</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-    body, html { width: 100%; height: 100%; overflow: hidden; background: #0c162d; font-family: 'Rajdhani', sans-serif; color: #e2e8f0; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #e8f0f8; font-family: 'Plus Jakarta Sans', sans-serif; color: #0f172a; }
     #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; cursor: grab; }
     #canvas-container:active { cursor: grabbing; }
 
-    /* HUD OVERLAYS (ESTILO CYBER TECH ILUMINADO) */
+    /* HUD OVERLAYS (ESTILO FORMAL, EXECUTIVO E ELEGANTE) */
     .hud-layer { position: absolute; z-index: 10; pointer-events: none; }
     
     /* Top Bar Header */
@@ -21,117 +21,122 @@
       top: 16px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: flex-start;
     }
     .brand-box {
-      background: rgba(13, 25, 51, 0.92);
-      border: 1px solid #00f0ff;
-      border-left: 5px solid #00f0ff;
-      padding: 12px 22px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #0284c7;
+      padding: 12px 20px;
       backdrop-filter: blur(12px);
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
-      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      border-radius: 6px;
     }
     .brand-title {
-      font-size: 22px; font-weight: 700; color: #00f0ff; letter-spacing: 2px; text-transform: uppercase;
+      font-size: 19px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px;
       display: flex; align-items: center; gap: 8px;
     }
-    .brand-sub { font-size: 13px; color: #94a3b8; font-family: 'Fira Code', monospace; font-weight: 600; margin-top: 2px; }
+    .brand-title span { color: #0284c7; }
+    .brand-sub { font-size: 13px; color: #64748b; font-family: 'Inter', sans-serif; font-weight: 500; margin-top: 2px; }
 
     .top-actions { display: flex; gap: 10px; pointer-events: auto; }
     .hud-btn {
-      background: rgba(13, 25, 51, 0.92);
-      border: 1px solid #00f0ff;
-      color: #00f0ff;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #cbd5e1;
+      color: #334155;
       padding: 9px 16px;
       font-size: 13px;
-      font-weight: 700;
-      font-family: 'Rajdhani', sans-serif;
-      letter-spacing: 1px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
       transition: all 0.2s;
       text-decoration: none;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      border-radius: 6px;
     }
-    .hud-btn:hover, .hud-btn.active {
-      background: #00f0ff; color: #081020; box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+    .hud-btn:hover {
+      background: #f8fafc; color: #0284c7; border-color: #94a3b8; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
     }
 
     /* Month Quick Selector Bar */
     .month-nav {
       top: 86px; left: 50%; transform: translateX(-50%);
-      background: rgba(13, 25, 51, 0.92);
-      border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #cbd5e1;
+      padding: 5px 10px;
       border-radius: 30px;
       display: flex;
-      gap: 6px;
+      gap: 5px;
       pointer-events: auto;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
       backdrop-filter: blur(10px);
       max-width: 95vw;
       overflow-x: auto;
     }
     .month-pill {
-      background: rgba(22, 40, 77, 0.8);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      color: #cbd5e1;
-      padding: 6px 13px;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: 'Fira Code', monospace;
+      background: transparent;
+      border: none;
+      color: #475569;
+      padding: 6px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
       cursor: pointer;
       border-radius: 20px;
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .month-pill:hover, .month-pill.active {
-      background: #00f0ff; color: #081020; border-color: #00f0ff; box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    .month-pill:hover {
+      color: #0284c7; background: #f1f5f9;
+    }
+    .month-pill.active {
+      background: #0284c7; color: #ffffff; font-weight: 700;
     }
 
-    /* LEGENDA VISUAL FIXA DOS NÍVEIS DAS CASAS (BOTTOM LEFT) */
+    /* LEGENDA VISUAL FIXA DOS NÍVEIS ARQUITETÔNICOS (BOTTOM LEFT) */
     .legend-box {
       bottom: 24px; left: 24px;
-      width: 330px;
-      background: rgba(11, 22, 46, 0.94);
-      border: 1px solid #00f0ff;
-      border-left: 5px solid #00f0ff;
+      width: 340px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #0284c7;
       padding: 16px 18px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
-      border-radius: 6px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      border-radius: 8px;
       pointer-events: auto;
     }
     .legend-title {
-      font-size: 14px; font-weight: 700; color: #00f0ff; letter-spacing: 1.5px; text-transform: uppercase;
+      font-size: 13.5px; font-weight: 700; color: #0f172a; letter-spacing: -0.2px;
       margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
     }
     .legend-row {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 13px; font-family: 'Fira Code', monospace;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 13px; font-family: 'Inter', sans-serif;
     }
     .legend-row:last-child { margin-bottom: 0; }
-    .legend-badge {
-      width: 26px; height: 26px; border-radius: 4px; display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: bold; color: #fff; flex-shrink: 0;
+    .legend-icon-frame {
+      width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
     }
-    .badge-lvl0 { background: #1e335e; border: 1px solid #3b82f6; }
-    .badge-lvl1 { background: #00f0ff; color: #081020; box-shadow: 0 0 8px rgba(0, 240, 255, 0.6); }
-    .badge-lvl2 { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
-    .badge-lvl3 { background: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.8); }
-    .legend-text strong { color: #ffffff; font-size: 13.5px; display: block; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.5px; }
-    .legend-text span { color: #94a3b8; font-size: 11.5px; }
+    .icon-park { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .icon-house { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .icon-corp { background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; }
+    .icon-sky { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    
+    .legend-text strong { color: #0f172a; font-size: 13px; display: block; font-weight: 600; }
+    .legend-text span { color: #64748b; font-size: 11.5px; }
 
     /* CARD INSPECTOR DE DETALHAMENTO DO LOTE (BOTTOM RIGHT) */
     .inspector-card {
       bottom: 24px; right: 24px;
       width: 410px;
-      background: rgba(11, 22, 46, 0.95);
-      border: 2px solid #00f0ff;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.08);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #cbd5e1;
+      border-top: 4px solid #0284c7;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.1);
       padding: 22px;
       backdrop-filter: blur(14px);
-      border-radius: 6px;
+      border-radius: 8px;
       pointer-events: auto;
       transition: all 0.3s;
     }
@@ -139,50 +144,51 @@
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
     }
     .inspector-tag {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      color: #081020; background: #00f0ff; padding: 4px 10px;
-      text-transform: uppercase; font-family: 'Fira Code', monospace; border-radius: 3px;
+      font-size: 11.5px; font-weight: 700; letter-spacing: 0.5px;
+      color: #0369a1; background: #e0f2fe; padding: 4px 10px;
+      border-radius: 4px; text-transform: uppercase; font-family: 'Inter', sans-serif;
     }
     .inspector-commits {
-      font-size: 14px; font-weight: 700; color: #34d399; font-family: 'Fira Code', monospace;
+      font-size: 14px; font-weight: 700; color: #15803d; font-family: 'Inter', sans-serif;
     }
-    .inspector-title { font-size: 23px; font-weight: 700; color: #ffffff; margin-bottom: 6px; }
-    .inspector-level { font-size: 12.5px; color: #00f0ff; font-weight: 700; font-family: 'Fira Code', monospace; margin-bottom: 12px; }
-    .inspector-desc { font-size: 14px; color: #cbd5e1; line-height: 1.45; margin-bottom: 14px; }
+    .inspector-title { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.3px; }
+    .inspector-level { font-size: 13px; color: #0284c7; font-weight: 600; font-family: 'Inter', sans-serif; margin-bottom: 12px; }
+    .inspector-desc { font-size: 14px; color: #475569; line-height: 1.5; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
     .inspector-box {
-      background: rgba(0, 240, 255, 0.06);
-      border-left: 4px solid #00f0ff;
-      padding: 10px 12px;
+      background: #f8fafc;
+      border-left: 3px solid #0284c7;
+      padding: 10px 14px;
       margin-bottom: 16px;
       font-size: 12.5px;
-      font-family: 'Fira Code', monospace;
-      color: #67e8f9;
-      line-height: 1.4;
+      font-family: 'Inter', sans-serif;
+      color: #334155;
+      line-height: 1.5;
+      border-radius: 0 4px 4px 0;
     }
     .inspector-link {
-      display: block; text-align: center; background: #00f0ff; color: #081020;
-      text-decoration: none; font-weight: 700; padding: 11px; font-size: 13.5px; letter-spacing: 1.5px;
-      transition: all 0.2s; border-radius: 4px;
+      display: block; text-align: center; background: #0284c7; color: #ffffff;
+      text-decoration: none; font-weight: 600; padding: 11px; font-size: 13.5px;
+      transition: all 0.2s; border-radius: 6px; font-family: 'Inter', sans-serif;
     }
-    .inspector-link:hover { background: #38bdf8; box-shadow: 0 0 20px #00f0ff; }
+    .inspector-link:hover { background: #0369a1; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3); }
 
-    /* Navigation Hint (Bottom Center) */
+    /* Controls Hint (Bottom Center) */
     .controls-hint {
       bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: rgba(13, 25, 51, 0.92);
-      border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 9px 22px;
-      font-size: 13px;
-      color: #cbd5e1;
-      font-family: 'Fira Code', monospace;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #cbd5e1;
+      padding: 8px 20px;
+      font-size: 12.5px;
+      color: #475569;
+      font-family: 'Inter', sans-serif;
       display: flex;
-      gap: 18px;
+      gap: 16px;
       pointer-events: none;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-      border-radius: 20px;
-      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+      border-radius: 30px;
+      font-weight: 500;
     }
-    .controls-hint span { color: #00f0ff; font-weight: 700; }
+    .controls-hint strong { color: #0284c7; }
   </style>
 </head>
 <body>
@@ -192,108 +198,106 @@
   <!-- TOP BAR -->
   <div class="hud-layer top-bar">
     <div class="brand-box">
-      <div class="brand-title">🏙️ QA DevCity // Metrópole dos Commits</div>
-      <div class="brand-sub">Victor Valente // Cada Dia é um Lote, Cada Commit Constrói a Casa</div>
+      <div class="brand-title">🏙️ QA City <span>// Metrópole da Qualidade</span></div>
+      <div class="brand-sub">Victor Valente • Cada Dia é um Lote, Cada Commit Constrói a Cidade</div>
     </div>
     <div class="top-actions">
-      <button class="hud-btn" onclick="resetView()">🔄 VISÃO GERAL</button>
-      <a href="https://github.com/QA-VictorValente" target="_blank" class="hud-btn">⭐ GITHUB</a>
+      <button class="hud-btn" onclick="resetView()">🔄 Visão Geral</button>
+      <a href="https://github.com/QA-VictorValente" target="_blank" class="hud-btn">⭐ GitHub</a>
     </div>
   </div>
 
   <!-- BARRA DE NAVEGAÇÃO DOS MESES -->
   <div class="hud-layer month-nav" id="month-bar">
-    <button class="month-pill active" onclick="focusDistrict(-1)">TODOS OS MESES</button>
-    <button class="month-pill" onclick="focusDistrict(0)">JAN</button>
-    <button class="month-pill" onclick="focusDistrict(1)">FEV</button>
-    <button class="month-pill" onclick="focusDistrict(2)">MAR</button>
-    <button class="month-pill" onclick="focusDistrict(3)">ABR</button>
-    <button class="month-pill" onclick="focusDistrict(4)">MAI</button>
-    <button class="month-pill" onclick="focusDistrict(5)">JUN</button>
-    <button class="month-pill" onclick="focusDistrict(6)">JUL</button>
-    <button class="month-pill" onclick="focusDistrict(7)">AGO</button>
-    <button class="month-pill" onclick="focusDistrict(8)">SET</button>
-    <button class="month-pill" onclick="focusDistrict(9)">OUT</button>
-    <button class="month-pill" onclick="focusDistrict(10)">NOV</button>
-    <button class="month-pill" onclick="focusDistrict(11)">DEZ</button>
+    <button class="month-pill active" onclick="focusDistrict(-1)">Todos os Meses</button>
+    <button class="month-pill" onclick="focusDistrict(0)">Jan</button>
+    <button class="month-pill" onclick="focusDistrict(1)">Fev</button>
+    <button class="month-pill" onclick="focusDistrict(2)">Mar</button>
+    <button class="month-pill" onclick="focusDistrict(3)">Abr</button>
+    <button class="month-pill" onclick="focusDistrict(4)">Mai</button>
+    <button class="month-pill" onclick="focusDistrict(5)">Jun</button>
+    <button class="month-pill" onclick="focusDistrict(6)">Jul</button>
+    <button class="month-pill" onclick="focusDistrict(7)">Ago</button>
+    <button class="month-pill" onclick="focusDistrict(8)">Set</button>
+    <button class="month-pill" onclick="focusDistrict(9)">Out</button>
+    <button class="month-pill" onclick="focusDistrict(10)">Nov</button>
+    <button class="month-pill" onclick="focusDistrict(11)">Dez</button>
   </div>
 
-  <!-- LEGENDA EXPLICATIVA DOS NÍVEIS DAS CASAS -->
+  <!-- LEGENDA VISUAL FIXA DE ARQUITETURA -->
   <div class="hud-layer legend-box">
     <div class="legend-title">
-      <span>📐 Evolução Arquitetônica dos Lotes</span>
+      <span>Evolução Arquitetônica dos Lotes</span>
     </div>
     
     <div class="legend-row">
-      <div class="legend-badge badge-lvl0">0</div>
+      <div class="legend-icon-frame icon-park">🌳</div>
       <div class="legend-text">
-        <strong>Lote Base (0 Commits)</strong>
-        <span>Dia de Descanso / Análise de Requisitos</span>
+        <strong>Praça com Jardim (0 Commits)</strong>
+        <span>Área verde e arborizada • Dia de descanso e planejamento</span>
       </div>
     </div>
 
     <div class="legend-row">
-      <div class="legend-badge badge-lvl1">🏠</div>
+      <div class="legend-icon-frame icon-house">🏡</div>
       <div class="legend-text">
-        <strong>Casa Tech Moderna (1 a 3 Commits)</strong>
-        <span>Sobrado com vidro fumê e neon cyan</span>
+        <strong>Casa com Telhado Inclinado (1 a 3 Commits)</strong>
+        <span>Residência moderna com telhado gabled e jardim frontal</span>
       </div>
     </div>
 
     <div class="legend-row">
-      <div class="legend-badge badge-lvl2">🏢</div>
+      <div class="legend-icon-frame icon-corp">🏢</div>
       <div class="legend-text">
-        <strong>Edifício Comercial (4 a 7 Commits)</strong>
-        <span>Prédio corporativo com dados em esmeralda</span>
+        <strong>Edifício Comercial com Terraço (4 a 7 Commits)</strong>
+        <span>Prédio corporativo com fachada em vidro e jardim no topo</span>
       </div>
     </div>
 
     <div class="legend-row">
-      <div class="legend-badge badge-lvl3">🏙️</div>
+      <div class="legend-icon-frame icon-sky">🏛️</div>
       <div class="legend-text">
-        <strong>Arranha-Céu / Torre (8 a 10+ Commits)</strong>
-        <span>Torre monumental com antena dourada</span>
+        <strong>Arranha-Céu com Heliponto (8+ Commits)</strong>
+        <span>Torre monumental icônica com heliponto e antena no topo</span>
       </div>
     </div>
   </div>
 
-  <!-- INSPECTOR DE DETALHES DO LOTE SELECIONADO -->
+  <!-- INSPECTOR DE DETALHES DO LOTE -->
   <div class="hud-layer inspector-card" id="inspector-card">
     <div class="inspector-header">
-      <div class="inspector-tag" id="card-district">DISTRITO OUTUBRO</div>
-      <div class="inspector-commits" id="card-commits">⚡ 8 COMMITS</div>
+      <div class="inspector-tag" id="card-district">Distrito de Outubro</div>
+      <div class="inspector-commits" id="card-commits">⚡ 8 Commits</div>
     </div>
     <div class="inspector-title" id="card-day">17 de Outubro de 2026</div>
-    <div class="inspector-level" id="card-level">🏗️ NÍVEL: ARRANHA-CÉU CORPORATIVO</div>
+    <div class="inspector-level" id="card-level">🏛️ Nível: Arranha-Céu com Heliponto</div>
     <div class="inspector-desc" id="card-desc">Atividade no repositório CTFL-Academy: Automação E2E & Plataforma de Certificação ISTQB.</div>
     <div class="inspector-box" id="card-scope">
-      🧪 ESCOPO: Testes Funcionais & Validação de Contrato<br>
-      📊 STATUS: 100% Suites Passing // Zero Regressões
+      <strong>Escopo QA:</strong> Testes Funcionais & Validação de Contrato<br>
+      <strong>Métricas:</strong> 100% Suites Passing • Zero Regressões
     </div>
-    <a id="card-link" href="https://github.com/QA-VictorValente" target="_blank" class="inspector-link">VER ATIVIDADE NO GITHUB ➔</a>
+    <a id="card-link" href="https://github.com/QA-VictorValente" target="_blank" class="inspector-link">Abrir Repositório no GitHub ➔</a>
   </div>
 
-  <!-- CONTROLES -->
+  <!-- DICAS DE CONTROLE -->
   <div class="hud-layer controls-hint">
-    <div><span>Clique e Arraste</span>: Girar / Mover Cidade</div>
-    <div><span>Scroll</span>: Zoom In / Out</div>
-    <div><span>Clique no Lote</span>: Inspecionar o Dia</div>
+    <div><strong>Clique e Arraste</strong>: Girar Cidade</div>
+    <div><strong>Scroll</strong>: Zoom In / Out</div>
+    <div><strong>Clique no Lote</strong>: Inspecionar o Dia</div>
   </div>
 
   <!-- THREE.JS & ORBIT CONTROLS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script>
-    // --- THREE.JS SCENE (PEGADA TECH CLARA: SLATE / NAVY / NEON, NÃO BRANCO) ---
+    // --- CENA THREE.JS (DIURNA, FORMAL E ARQUITETÔNICA) ---
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    // Cor de fundo: Luminous Cyber Slate Navy (Tech iluminado, elegante e sem escuridão)
-    scene.background = new THREE.Color(0x0e1b38);
-    scene.fog = new THREE.FogExp2(0x0e1b38, 0.0006);
+    scene.background = new THREE.Color(0xe2ecf7); // Céu claro, suave e elegante
+    scene.fog = new THREE.FogExp2(0xe2ecf7, 0.0006);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
-    // Posição inicial: Visão geral panorâmica sobre a metrópole
-    camera.position.set(0, 310, 410);
+    camera.position.set(0, 320, 430);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -302,53 +306,48 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // --- CONTROLES DE CÂMERA LIVRES (ORBIT CONTROLS) ---
+    // Controles de Órbita
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2.08;
-    controls.minDistance = 35;
+    controls.minDistance = 30;
     controls.maxDistance = 900;
     controls.target.set(0, 0, 0);
 
-    // --- ILUMINAÇÃO TECH CLARA (BEM ILUMINADA, NÍTIDA E SEM BRANCO EXCESSIVO) ---
-    const ambientLight = new THREE.AmbientLight(0x7da4d9, 1.6);
+    // --- ILUMINAÇÃO NATURAL DIURNA (SUAVE E REALISTA) ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.DirectionalLight(0xd6eaff, 1.8);
-    mainLight.position.set(250, 500, 250);
-    mainLight.castShadow = true;
-    mainLight.shadow.mapSize.width = 2048;
-    mainLight.shadow.mapSize.height = 2048;
-    mainLight.shadow.camera.near = 10;
-    mainLight.shadow.camera.far = 1500;
-    mainLight.shadow.camera.left = -650;
-    mainLight.shadow.camera.right = 650;
-    mainLight.shadow.camera.top = 650;
-    mainLight.shadow.camera.bottom = -650;
-    scene.add(mainLight);
+    const sun = new THREE.DirectionalLight(0xfff7ea, 1.5);
+    sun.position.set(280, 600, 280);
+    sun.castShadow = true;
+    sun.shadow.mapSize.width = 2048;
+    sun.shadow.mapSize.height = 2048;
+    sun.shadow.camera.near = 10;
+    sun.shadow.camera.far = 1600;
+    sun.shadow.camera.left = -650;
+    sun.shadow.camera.right = 650;
+    sun.shadow.camera.top = 650;
+    sun.shadow.camera.bottom = -650;
+    scene.add(sun);
 
-    const cyanRim = new THREE.DirectionalLight(0x00f0ff, 0.9);
-    cyanRim.position.set(-250, 300, -250);
-    scene.add(cyanRim);
+    const hemiLight = new THREE.HemisphereLight(0xf1f7fc, 0xb8cde3, 0.7);
+    scene.add(hemiLight);
 
-    // --- PISO METROPOLITANO TECH COM AVENIDAS ILUMINADAS ---
-    const groundGeo = new THREE.PlaneGeometry(2200, 2200);
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x112044, roughness: 0.7, metalness: 0.3 });
+    // --- TERRENO URBANO, AVENIDAS E CALÇADAS ---
+    const groundGeo = new THREE.PlaneGeometry(2400, 2400);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0xdae6f2, roughness: 0.9 });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    const grid = new THREE.GridHelper(2200, 88, 0x00f0ff, 0x1d3670);
-    grid.position.y = 0.04;
-    scene.add(grid);
-
-    // Avenidas Tech com linhas de laser neon
+    // Avenidas Elegantes (Asfalto Escuro com Faixas Brancas Limpas)
     function createAvenue(x, z, w, l, rot) {
       const road = new THREE.Mesh(
         new THREE.PlaneGeometry(w, l),
-        new THREE.MeshStandardMaterial({ color: 0x16284f, roughness: 0.6, metalness: 0.4 })
+        new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 })
       );
       road.rotation.x = -Math.PI / 2;
       if (rot) road.rotation.z = Math.PI / 2;
@@ -356,61 +355,252 @@
       road.receiveShadow = true;
       scene.add(road);
 
-      // Faixa Central Neon Cyan
       const centerLine = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.8, l),
-        new THREE.MeshBasicMaterial({ color: 0x00f0ff })
+        new THREE.PlaneGeometry(0.7, l),
+        new THREE.MeshBasicMaterial({ color: 0xffffff })
       );
       centerLine.rotation.x = -Math.PI / 2;
       if (rot) centerLine.rotation.z = Math.PI / 2;
       centerLine.position.set(x, 0.09, z);
       scene.add(centerLine);
     }
-    createAvenue(0, 0, 20, 1800, false);
-    createAvenue(0, 0, 20, 1800, true);
+    createAvenue(0, 0, 20, 2000, false);
+    createAvenue(0, 0, 20, 2000, true);
     for (let offset = -540; offset <= 540; offset += 180) {
       if (offset !== 0) {
-        createAvenue(offset, 0, 14, 1800, false);
-        createAvenue(0, offset, 14, 1800, true);
+        createAvenue(offset, 0, 14, 2000, false);
+        createAvenue(0, offset, 14, 2000, true);
       }
     }
 
-    // --- 12 DISTRITOS E LOTES COM BELEZA E EVOLUÇÃO ARQUITETÔNICA ---
+    // --- RECURSOS ARQUITETÔNICOS COMPARTILHADOS ---
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0x85502c, roughness: 0.7 });
+    const wallWhiteMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.3 });
+    const wallWarmMat = new THREE.MeshStandardMaterial({ color: 0xede9e3, roughness: 0.4 });
+    const glassMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.1, metalness: 0.7 });
+    const roofSlateMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.5 });
+    const roofTerracottaMat = new THREE.MeshStandardMaterial({ color: 0xa84824, roughness: 0.6 });
+    const foliageMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.8 });
+    const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c3818, roughness: 0.9 });
+
+    // Helper: Criar Árvore Low-Poly Charmosa
+    function addTree(group, x, z, scale = 1) {
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.3 * scale, 0.4 * scale, 2.5 * scale, 6), trunkMat);
+      trunk.position.set(x, 1.25 * scale, z);
+      trunk.castShadow = true;
+      group.add(trunk);
+
+      const crown = new THREE.Mesh(new THREE.DodecahedronGeometry(1.6 * scale, 1), foliageMat);
+      crown.position.set(x, 3.2 * scale, z);
+      crown.castShadow = true;
+      group.add(crown);
+    }
+
+    // --- MODELOS ARQUITETÔNICOS VISUAIS PARA CADA NÍVEL DE COMMITS ---
+
+    // 1. NÍVEL 0 (0 Commits): Praça Arborizada com Banco e Caminho de Pedras
+    function buildParkPlot(group) {
+      // Gramado verde vivo
+      const lawn = new THREE.Mesh(
+        new THREE.BoxGeometry(13, 0.4, 13),
+        new THREE.MeshStandardMaterial({ color: 0x4ade80, roughness: 0.8 })
+      );
+      lawn.position.y = 0.2;
+      lawn.receiveShadow = true;
+      group.add(lawn);
+
+      // Caminho de pedras
+      const path = new THREE.Mesh(
+        new THREE.BoxGeometry(3, 0.42, 13),
+        new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.9 })
+      );
+      path.position.y = 0.21;
+      group.add(path);
+
+      // 2 Árvores
+      addTree(group, -3.8, -3.2, 1.2);
+      addTree(group, 3.8, 3.2, 1.0);
+
+      // Banco de Praça
+      const bench = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.5, 0.8), woodMat);
+      bench.position.set(0, 0.6, -1);
+      bench.castShadow = true;
+      group.add(bench);
+    }
+
+    // 2. NÍVEL 1 (1 a 3 Commits): Casa Residencial com Telhado Inclinado (Gabled)
+    function buildModernHouse(group, dayNum, commits) {
+      // Base da calçada
+      const lawn = new THREE.Mesh(
+        new THREE.BoxGeometry(13, 0.4, 13),
+        new THREE.MeshStandardMaterial({ color: 0x86efac, roughness: 0.8 })
+      );
+      lawn.position.y = 0.2;
+      group.add(lawn);
+
+      // Corpo da Casa (Alvenaria Branca)
+      const h = 6 + commits * 1.5;
+      const body = new THREE.Mesh(new THREE.BoxGeometry(9, h, 8.5), wallWhiteMat);
+      body.position.set(0, h / 2 + 0.4, 0.5);
+      body.castShadow = true;
+      body.receiveShadow = true;
+      group.add(body);
+
+      // Telhado Inclinado (Prisma Triangular Gabled)
+      const roofShape = new THREE.Shape();
+      roofShape.moveTo(-5, 0);
+      roofShape.lineTo(0, 3.5);
+      roofShape.lineTo(5, 0);
+      roofShape.closePath();
+
+      const extrudeSettings = { depth: 9.2, bevelEnabled: false };
+      const roofGeo = new THREE.ExtrudeGeometry(roofShape, extrudeSettings);
+      const roof = new THREE.Mesh(roofGeo, roofTerracottaMat);
+      roof.position.set(0, h + 0.4, -4.1);
+      roof.castShadow = true;
+      group.add(roof);
+
+      // Chaminé
+      const chimney = new THREE.Mesh(new THREE.BoxGeometry(1.2, 3, 1.2), roofSlateMat);
+      chimney.position.set(2.2, h + 2.5, 0);
+      chimney.castShadow = true;
+      group.add(chimney);
+
+      // Porta de Madeira & Janelas
+      const door = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 2.6), woodMat);
+      door.position.set(0, 1.7, 4.8);
+      group.add(door);
+
+      // Árvore no jardim da frente
+      addTree(group, -4.2, 4.2, 0.9);
+    }
+
+    // 3. NÍVEL 2 (4 a 7 Commits): Edifício Comercial com Terraço e Jardim Suspenso
+    function buildMidRiseCorporate(group, dayNum, commits) {
+      const floors = commits; // 4 a 7 andares
+      const h = floors * 4.2;
+
+      // Base do edifício
+      const base = new THREE.Mesh(
+        new THREE.BoxGeometry(12, 1.5, 12),
+        new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 })
+      );
+      base.position.y = 0.75;
+      base.castShadow = true;
+      group.add(base);
+
+      // Corpo envidraçado
+      const body = new THREE.Mesh(new THREE.BoxGeometry(10.5, h, 10.5), glassMat);
+      body.position.y = h / 2 + 1.5;
+      body.castShadow = true;
+      body.receiveShadow = true;
+      group.add(body);
+
+      // Molduras estruturais dos andares
+      for (let f = 1; f <= floors; f++) {
+        const floorSlab = new THREE.Mesh(
+          new THREE.BoxGeometry(11.2, 0.6, 11.2),
+          wallWhiteMat
+        );
+        floorSlab.position.y = 1.5 + f * 4.2;
+        floorSlab.castShadow = true;
+        group.add(floorSlab);
+      }
+
+      // Jardim no topo (Terraço verde suspenso)
+      const roofGarden = new THREE.Mesh(
+        new THREE.BoxGeometry(9, 0.4, 9),
+        new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.8 })
+      );
+      roofGarden.position.y = h + 1.7;
+      group.add(roofGarden);
+
+      // Pequenas árvores/arbustos no terraço
+      addTree(group, -2.5, -2.5, 0.6);
+      addTree(group, 2.5, 2.5, 0.6);
+    }
+
+    // 4. NÍVEL 3 (8+ Commits): Arranha-Céu Landmark com Heliponto no Topo
+    function buildLandmarkSkyscraper(group, dayNum, commits) {
+      const h1 = 30;
+      const h2 = 22;
+      const totalH = h1 + h2;
+
+      // Nível Inferior da Torre
+      const tier1 = new THREE.Mesh(new THREE.BoxGeometry(12, h1, 12), wallWhiteMat);
+      tier1.position.y = h1 / 2;
+      tier1.castShadow = true;
+      tier1.receiveShadow = true;
+      group.add(tier1);
+
+      // Nível Superior Escalonado (Vidro Azul Escuro)
+      const tier2 = new THREE.Mesh(new THREE.BoxGeometry(9, h2, 9), glassMat);
+      tier2.position.y = h1 + h2 / 2;
+      tier2.castShadow = true;
+      tier2.receiveShadow = true;
+      group.add(tier2);
+
+      // Heliponto no Topo (Com o 'H' gravado)
+      const helipadCanvas = document.createElement('canvas');
+      helipadCanvas.width = 128; helipadCanvas.height = 128;
+      const hCtx = helipadCanvas.getContext('2d');
+      hCtx.fillStyle = '#334155';
+      hCtx.fillRect(0, 0, 128, 128);
+      hCtx.strokeStyle = '#facc15';
+      hCtx.lineWidth = 8;
+      hCtx.beginPath();
+      hCtx.arc(64, 64, 52, 0, Math.PI * 2);
+      hCtx.stroke();
+      hCtx.fillStyle = '#ffffff';
+      hCtx.font = 'bold 64px Inter, sans-serif';
+      hCtx.textAlign = 'center';
+      hCtx.textBaseline = 'middle';
+      hCtx.fillText('H', 64, 64);
+
+      const helipadTex = new THREE.CanvasTexture(helipadCanvas);
+      const helipad = new THREE.Mesh(
+        new THREE.PlaneGeometry(8, 8),
+        new THREE.MeshBasicMaterial({ map: helipadTex })
+      );
+      helipad.rotation.x = -Math.PI / 2;
+      helipad.position.y = totalH + 0.15;
+      group.add(helipad);
+
+      // Antena Spire com Luz de Sinalização Aeronáutica
+      const spire = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.3, 0.4, 18, 8),
+        new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9 })
+      );
+      spire.position.set(3, totalH + 9, 3);
+      spire.castShadow = true;
+      group.add(spire);
+
+      const beacon = new THREE.Mesh(
+        new THREE.SphereGeometry(0.8, 16, 16),
+        new THREE.MeshBasicMaterial({ color: 0xef4444 })
+      );
+      beacon.position.set(3, totalH + 18, 3);
+      group.add(beacon);
+    }
+
+    // --- 12 DISTRITOS E 365 LOTES COM CORREÇÃO DE VISIBILIDADE DO LETREIRO ---
     const months = [
-      { name: "Janeiro", color: "#00f0ff", repo: "qa-web-cypress-conduit", scope: "Testes E2E & Mocking" },
-      { name: "Fevereiro", color: "#34d399", repo: "qa-web-playwright-saucedemo", scope: "Arquitetura POM E2E" },
-      { name: "Março", color: "#a78bfa", repo: "qa-perf-k6-serverest", scope: "Testes de Carga & SLAs" },
-      { name: "Abril", color: "#fb923c", repo: "qa-api-playwright-serverest", scope: "Schemas Zod & APIs" },
-      { name: "Maio", color: "#fbbf24", repo: "CTFL-Academy", scope: "ISTQB Preparação v4.0.1" },
-      { name: "Junho", color: "#00f0ff", repo: "qa-web-playwright-saucedemo", scope: "Integração Contínua CI/CD" },
-      { name: "Julho", color: "#34d399", repo: "qa-web-cypress-conduit", scope: "Automação com App Actions" },
-      { name: "Agosto", color: "#a78bfa", repo: "qa-perf-k6-serverest", scope: "Validação de Performance p95" },
-      { name: "Setembro", color: "#fb923c", repo: "qa-api-playwright-serverest", scope: "Contratos REST & Postman" },
-      { name: "Outubro", color: "#00f0ff", repo: "CTFL-Academy", scope: "Qualidade Contínua & ISTQB" },
-      { name: "Novembro", color: "#34d399", repo: "qa-web-playwright-saucedemo", scope: "Testes de Regressão & Sanity" },
-      { name: "Dezembro", color: "#fbbf24", repo: "QA-VictorValente", scope: "Planejamento Anual de QA" }
+      { name: "Janeiro", repo: "qa-web-cypress-conduit", scope: "Testes E2E & Mocking" },
+      { name: "Fevereiro", repo: "qa-web-playwright-saucedemo", scope: "Arquitetura POM E2E" },
+      { name: "Março", repo: "qa-perf-k6-serverest", scope: "Testes de Carga & SLAs" },
+      { name: "Abril", repo: "qa-api-playwright-serverest", scope: "Schemas Zod & APIs" },
+      { name: "Maio", repo: "CTFL-Academy", scope: "ISTQB Preparação v4.0.1" },
+      { name: "Junho", repo: "qa-web-playwright-saucedemo", scope: "Integração Contínua CI/CD" },
+      { name: "Julho", repo: "qa-web-cypress-conduit", scope: "Automação com App Actions" },
+      { name: "Agosto", repo: "qa-perf-k6-serverest", scope: "Validação de Performance p95" },
+      { name: "Setembro", repo: "qa-api-playwright-serverest", scope: "Contratos REST & Postman" },
+      { name: "Outubro", repo: "CTFL-Academy", scope: "Qualidade Contínua & ISTQB" },
+      { name: "Novembro", repo: "qa-web-playwright-saucedemo", scope: "Testes de Regressão & Sanity" },
+      { name: "Dezembro", repo: "QA-VictorValente", scope: "Planejamento Anual de QA" }
     ];
 
     const districts = [];
     const interactiveLots = [];
-
-    // Textura Tech Elegante do Teto com o Número do Dia
-    function makeTechRoofTexture(dayNum, bgHex, commits) {
-      const c = document.createElement('canvas');
-      c.width = 128; c.height = 128;
-      const ctx = c.getContext('2d');
-      ctx.fillStyle = bgHex;
-      ctx.fillRect(0, 0, 128, 128);
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(3, 3, 122, 122);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 56px Rajdhani, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(dayNum, 64, 64);
-      return new THREE.CanvasTexture(c);
-    }
 
     let monthCounter = 0;
     for (let gx = -1.5; gx <= 1.5; gx += 1) {
@@ -422,38 +612,56 @@
 
         districts.push({ x: distCenterX, z: distCenterZ, name: m.name, index: monthCounter });
 
-        // Base Tecnológica do Distrito
+        // Praça Base do Distrito
         const plaza = new THREE.Mesh(
           new THREE.PlaneGeometry(215, 165),
-          new THREE.MeshStandardMaterial({ color: 0x162c5b, roughness: 0.6, metalness: 0.4 })
+          new THREE.MeshStandardMaterial({ color: 0xcbe2d1, roughness: 0.9 })
         );
         plaza.rotation.x = -Math.PI / 2;
         plaza.position.set(distCenterX, 0.06, distCenterZ);
         plaza.receiveShadow = true;
         scene.add(plaza);
 
-        // Letreiro 3D Holográfico do Mês
+        // --- CORREÇÃO DO BUG: LETREIRO DO DISTRITO POSICIONADO ALTO E VISÍVEL ---
+        // O letreiro agora fica a Y = 90 metros de altura (MUITO acima de qualquer prédio!)
+        // e sustentado por dois elegantes pilares arquitetônicos laterais!
+        const signGroup = new THREE.Group();
+        signGroup.position.set(distCenterX, 0, distCenterZ - 82);
+
+        // Pilares do pórtico
+        const pilarL = new THREE.Mesh(new THREE.BoxGeometry(2, 90, 2), wallWhiteMat);
+        pilarL.position.set(-42, 45, 0);
+        pilarL.castShadow = true;
+        signGroup.add(pilarL);
+
+        const pilarR = new THREE.Mesh(new THREE.BoxGeometry(2, 90, 2), wallWhiteMat);
+        pilarR.position.set(42, 45, 0);
+        pilarR.castShadow = true;
+        signGroup.add(pilarR);
+
+        // Placa dupla face suspensa a 90m de altura
         const signCanvas = document.createElement('canvas');
         signCanvas.width = 512; signCanvas.height = 128;
         const sCtx = signCanvas.getContext('2d');
-        sCtx.fillStyle = 'rgba(14, 28, 60, 0.95)';
+        sCtx.fillStyle = '#ffffff';
         sCtx.fillRect(0, 0, 512, 128);
-        sCtx.strokeStyle = m.color;
-        sCtx.lineWidth = 8;
-        sCtx.strokeRect(4, 4, 504, 120);
-        sCtx.fillStyle = m.color;
-        sCtx.font = 'bold 52px Rajdhani, sans-serif';
+        sCtx.strokeStyle = '#0284c7';
+        sCtx.lineWidth = 10;
+        sCtx.strokeRect(5, 5, 502, 118);
+        sCtx.fillStyle = '#0f172a';
+        sCtx.font = 'bold 50px Plus Jakarta Sans, sans-serif';
         sCtx.textAlign = 'center';
         sCtx.textBaseline = 'middle';
-        sCtx.fillText(`📅 DISTRITO DE ${m.name.toUpperCase()}`, 256, 64);
+        sCtx.fillText(`DISTRITO DE ${m.name.toUpperCase()}`, 256, 64);
 
         const signTex = new THREE.CanvasTexture(signCanvas);
         const signMesh = new THREE.Mesh(
-          new THREE.PlaneGeometry(85, 21),
+          new THREE.PlaneGeometry(84, 21),
           new THREE.MeshBasicMaterial({ map: signTex, side: THREE.DoubleSide })
         );
-        signMesh.position.set(distCenterX, 45, distCenterZ - 75);
-        scene.add(signMesh);
+        signMesh.position.set(0, 88, 0);
+        signGroup.add(signMesh);
+        scene.add(signGroup);
 
         // 30 LOTES = 30 DIAS
         let day = 1;
@@ -463,134 +671,49 @@
             const loteX = distCenterX + bx * 26;
             const loteZ = distCenterZ + bz * 26;
 
-            // Simulação de commits com picos
+            // Commits no dia
             let commits = Math.floor(Math.random() * 5);
             if (m.name === "Outubro" || m.name === "Setembro" || m.name === "Agosto") {
               commits = Math.floor(Math.random() * 9) + 2;
             }
 
-            // Grupo da Construção Arquitetônica
             const lotGroup = new THREE.Group();
             lotGroup.position.set(loteX, 0, loteZ);
 
-            let buildingHeight = 2.5;
-            let buildingWidth = 12;
-            let roofColor = "#1e335e";
-            let levelName = "LOTE BASE (DESCANSO)";
+            let levelName = "";
 
-            // --- NÍVEL 0: LOTE BASE (0 Commits) ---
+            // NÍVEL 0: Praça Arborizada
             if (commits === 0) {
-              buildingHeight = 1.6;
-              const padGeo = new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingWidth);
-              const padMat = new THREE.MeshStandardMaterial({ color: 0x1e335e, roughness: 0.6, metalness: 0.4 });
-              const pad = new THREE.Mesh(padGeo, padMat);
-              pad.position.y = buildingHeight / 2;
-              lotGroup.add(pad);
-              roofColor = "#1e335e";
-              levelName = "LOTE BASE (DESCANSO / ANÁLISE)";
+              buildParkPlot(lotGroup);
+              levelName = "Praça com Jardim (Dia de Descanso)";
             }
-            // --- NÍVEL 1: CASA TECH MODERNA (1 a 3 Commits) ---
+            // NÍVEL 1: Casa com Telhado Inclinado
             else if (commits <= 3) {
-              buildingHeight = 8 + commits * 3.5;
-              // Fachada moderna escura com vidro fumê
-              const body = new THREE.Mesh(
-                new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingWidth),
-                new THREE.MeshStandardMaterial({ color: 0x1c315e, roughness: 0.3, metalness: 0.6 })
-              );
-              body.position.y = buildingHeight / 2;
-              body.castShadow = true;
-              lotGroup.add(body);
-
-              // Faixa decorativa de neon cyan
-              const neonStripe = new THREE.Mesh(
-                new THREE.BoxGeometry(buildingWidth + 0.4, 0.8, buildingWidth + 0.4),
-                new THREE.MeshBasicMaterial({ color: 0x00f0ff })
-              );
-              neonStripe.position.y = buildingHeight * 0.6;
-              lotGroup.add(neonStripe);
-
-              roofColor = "#00f0ff";
-              levelName = "CASA TECH MODERNA (1 A 3 COMMITS)";
+              buildModernHouse(lotGroup, day, commits);
+              levelName = "Casa Residencial com Telhado";
             }
-            // --- NÍVEL 2: EDIFÍCIO COMERCIAL (4 a 7 Commits) ---
+            // NÍVEL 2: Edifício Comercial com Terraço
             else if (commits <= 7) {
-              buildingHeight = 20 + commits * 4;
-              const body = new THREE.Mesh(
-                new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingWidth),
-                new THREE.MeshStandardMaterial({ color: 0x193b54, roughness: 0.2, metalness: 0.8 })
-              );
-              body.position.y = buildingHeight / 2;
-              body.castShadow = true;
-              lotGroup.add(body);
-
-              // Anéis duplos de neon esmeralda
-              for (let fy of [buildingHeight * 0.35, buildingHeight * 0.7]) {
-                const ring = new THREE.Mesh(
-                  new THREE.BoxGeometry(buildingWidth + 0.5, 1.0, buildingWidth + 0.5),
-                  new THREE.MeshBasicMaterial({ color: 0x10b981 })
-                );
-                ring.position.y = fy;
-                lotGroup.add(ring);
-              }
-
-              roofColor = "#10b981";
-              levelName = "EDIFÍCIO COMERCIAL (4 A 7 COMMITS)";
+              buildMidRiseCorporate(lotGroup, day, commits);
+              levelName = "Edifício Comercial com Terraço";
             }
-            // --- NÍVEL 3: ARRANHA-CÉU MONUMENTAL (8 a 10+ Commits) ---
+            // NÍVEL 3: Arranha-Céu com Heliponto
             else {
-              buildingHeight = 38 + commits * 5.5;
-              // Torre escalonada
-              const baseTier = new THREE.Mesh(
-                new THREE.BoxGeometry(buildingWidth, buildingHeight, buildingWidth),
-                new THREE.MeshStandardMaterial({ color: 0x223668, roughness: 0.2, metalness: 0.85 })
-              );
-              baseTier.position.y = buildingHeight / 2;
-              baseTier.castShadow = true;
-              lotGroup.add(baseTier);
-
-              // Pináculo e antena dourada no topo
-              const spire = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.35, 0.5, 18, 8),
-                new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.9 })
-              );
-              spire.position.y = buildingHeight + 9;
-              spire.castShadow = true;
-              lotGroup.add(spire);
-
-              // Luz beacon no topo da antena
-              const beaconOrb = new THREE.Mesh(
-                new THREE.SphereGeometry(1.2, 16, 16),
-                new THREE.MeshBasicMaterial({ color: 0xf59e0b })
-              );
-              beaconOrb.position.y = buildingHeight + 18;
-              lotGroup.add(beaconOrb);
-
-              roofColor = "#f59e0b";
-              levelName = "ARRANHA-CÉU / TORRE (8+ COMMITS)";
+              buildLandmarkSkyscraper(lotGroup, day, commits);
+              levelName = "Arranha-Céu com Heliponto";
             }
-
-            // Telhado com o NÚMERO DO DIA GRAVADO
-            const roofTex = makeTechRoofTexture(day, roofColor, commits);
-            const roof = new THREE.Mesh(
-              new THREE.PlaneGeometry(buildingWidth * 0.95, buildingWidth * 0.95),
-              new THREE.MeshBasicMaterial({ map: roofTex })
-            );
-            roof.rotation.x = -Math.PI / 2;
-            roof.position.y = buildingHeight + 0.12;
-            lotGroup.add(roof);
 
             scene.add(lotGroup);
 
-            // Objeto para interação do Raycaster
             lotGroup.userData = {
               day: `${day} de ${m.name} de 2026`,
-              district: `DISTRITO ${m.name.toUpperCase()}`,
+              district: `Distrito de ${m.name}`,
               commits: commits,
               level: levelName,
               repo: m.repo,
               scope: m.scope,
               link: `https://github.com/QA-VictorValente/${m.repo}`,
-              pos: { x: loteX, z: loteZ, h: buildingHeight }
+              pos: { x: loteX, z: loteZ }
             };
             interactiveLots.push(lotGroup);
 
@@ -601,26 +724,26 @@
       }
     }
 
-    // --- ANEL SELETOR NEON CYAN NO CHÃO ---
+    // --- ANEL SELETOR DISCRETO E ELEGANTE NO CHÃO ---
     const selectorRing = new THREE.Mesh(
-      new THREE.RingGeometry(8.5, 10.5, 32),
-      new THREE.MeshBasicMaterial({ color: 0x00f0ff, side: THREE.DoubleSide })
+      new THREE.RingGeometry(8.5, 10, 32),
+      new THREE.MeshBasicMaterial({ color: 0x0284c7, side: THREE.DoubleSide })
     );
     selectorRing.rotation.x = -Math.PI / 2;
     selectorRing.position.set(0, 0.25, 0);
     scene.add(selectorRing);
 
-    // --- RAYCASTER PARA CLIQUE NOS LOTES ---
+    // --- RAYCASTER DE SELEÇÃO DE LOTES ---
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     function updateInspector(data) {
       document.getElementById('card-district').innerText = data.district;
-      document.getElementById('card-commits').innerText = data.commits === 0 ? "DESCANSO / PLANEJAMENTO" : `⚡ ${data.commits} COMMITS`;
+      document.getElementById('card-commits').innerText = data.commits === 0 ? "Descanso / Planejamento" : `⚡ ${data.commits} Commits`;
       document.getElementById('card-day').innerText = data.day;
-      document.getElementById('card-level').innerText = `🏗️ ${data.level}`;
+      document.getElementById('card-level').innerText = `📐 ${data.level}`;
       document.getElementById('card-desc').innerText = `Atividade no repositório ${data.repo}: ${data.scope}`;
-      document.getElementById('card-scope').innerHTML = `🧪 ESCOPO: Testes de Automação & Validação de Qualidade<br>📊 RESULTADO: ${data.commits > 0 ? "Casos de Teste Aprovados // Cobertura Expandida" : "Análise e Refinamento de Requisitos"}`;
+      document.getElementById('card-scope').innerHTML = `<strong>Escopo QA:</strong> Testes de Automação & Garantia de Qualidade<br><strong>Status:</strong> ${data.commits > 0 ? "Casos de Teste Aprovados • Cobertura Expandida" : "Análise e Refinamento de Requisitos"}`;
       document.getElementById('card-link').href = data.link;
 
       selectorRing.position.set(data.pos.x, 0.25, data.pos.z);
@@ -634,20 +757,22 @@
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
-      // Checa interseção com os grupos dos lotes
       const hitObjects = [];
       interactiveLots.forEach(g => g.children.forEach(c => hitObjects.push(c)));
       const intersects = raycaster.intersectObjects(hitObjects);
 
       if (intersects.length > 0) {
-        const parentGroup = intersects[0].object.parent;
-        if (parentGroup && parentGroup.userData) {
-          updateInspector(parentGroup.userData);
+        let parent = intersects[0].object.parent;
+        while (parent && !parent.userData.day) {
+          parent = parent.parent;
+        }
+        if (parent && parent.userData.day) {
+          updateInspector(parent.userData);
         }
       }
     });
 
-    // --- TRANSIÇÃO SUAVE DE CÂMERA (NAVEGAÇÃO POR MESES) ---
+    // --- NAVEGAÇÃO SUAVE DE CÂMERA POR MESES ---
     let targetCamPos = null;
     let targetLookAt = null;
 
@@ -661,11 +786,11 @@
       buttons.forEach((b, i) => b.className = i === idx + 1 ? 'month-pill active' : 'month-pill');
 
       if (idx === -1) {
-        moveCameraTo(new THREE.Vector3(0, 310, 410), new THREE.Vector3(0, 0, 0));
+        moveCameraTo(new THREE.Vector3(0, 320, 430), new THREE.Vector3(0, 0, 0));
       } else {
         const d = districts[idx];
         if (d) {
-          moveCameraTo(new THREE.Vector3(d.x, 150, d.z + 140), new THREE.Vector3(d.x, 15, d.z));
+          moveCameraTo(new THREE.Vector3(d.x, 170, d.z + 160), new THREE.Vector3(d.x, 25, d.z));
         }
       }
     }
