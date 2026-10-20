@@ -13,10 +13,10 @@
     #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; cursor: grab; }
     #canvas-container:active { cursor: grabbing; }
 
-    /* HUD DISCRETO, CLEAN E NÃO POLUÍDO (MEIO TERMO ELEGANTE) */
+    /* HUD DISCRETO E CLEAN */
     .hud-layer { position: absolute; z-index: 10; pointer-events: none; }
     
-    /* Top Bar Minimalista */
+    /* Top Bar */
     .top-bar {
       top: 16px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: center;
     }
@@ -57,7 +57,7 @@
       background: #38bdf8; color: #0f172a; border-color: #38bdf8;
     }
 
-    /* Barra Compacta dos Meses (Apenas o nome do mês) */
+    /* Barra Compacta dos Meses */
     .month-nav {
       top: 76px; left: 50%; transform: translateX(-50%);
       background: rgba(22, 33, 54, 0.88);
@@ -201,7 +201,7 @@
     </div>
   </div>
 
-  <!-- NAVEGAÇÃO DOS MESES DE 2026 (APENAS O NOME DO MÊS) -->
+  <!-- NAVEGAÇÃO DOS MESES DE 2026 -->
   <div class="hud-layer month-nav" id="month-bar">
     <button class="month-pill active" onclick="focusDistrict(-1)">2026 (Todos)</button>
     <button class="month-pill" onclick="focusDistrict(0)">Janeiro</button>
@@ -223,19 +223,19 @@
     <div class="legend-title">Evolução Arquitetônica 2026</div>
     <div class="legend-item">
       <div class="legend-icon bg-park">🌳</div>
-      <div class="legend-label"><strong>0 Commits</strong><span>Praça com Lago & Árvores</span></div>
+      <div class="legend-label"><strong>0 Commits</strong><span>Praça com Lago & Chafariz</span></div>
     </div>
     <div class="legend-item">
       <div class="legend-icon bg-house">🏡</div>
-      <div class="legend-label"><strong>1 a 3 Commits</strong><span>Villa Moderna com Varanda</span></div>
+      <div class="legend-label"><strong>1 a 3 Commits</strong><span>Villa com Telhado & Pérgola</span></div>
     </div>
     <div class="legend-item">
       <div class="legend-icon bg-corp">🏢</div>
-      <div class="legend-label"><strong>4 a 7 Commits</strong><span>Prédio Corporativo com Terraço</span></div>
+      <div class="legend-label"><strong>4 a 7 Commits</strong><span>Complexo em L com Ático Inclinado</span></div>
     </div>
     <div class="legend-item">
       <div class="legend-icon bg-sky">🏛️</div>
-      <div class="legend-label"><strong>8+ Commits</strong><span>Torre com Heliponto & Spire</span></div>
+      <div class="legend-label"><strong>8+ Commits</strong><span>Torre Facetada com Heliponto & Spire</span></div>
     </div>
   </div>
 
@@ -246,7 +246,7 @@
       <div class="inspector-commits" id="card-commits">⚡ 8 Commits</div>
     </div>
     <div class="inspector-title" id="card-day">17 de Outubro de 2026</div>
-    <div class="inspector-level" id="card-level">🏛️ Torre Monumental com Heliponto</div>
+    <div class="inspector-level" id="card-level">🏛️ Torre Facetada com Heliponto & Spire</div>
     <div class="inspector-desc" id="card-desc">Atividade no repositório CTFL-Academy: Automação E2E & Plataforma de Certificação ISTQB.</div>
     <div class="inspector-box" id="card-scope">
       <strong>Escopo QA:</strong> Testes Funcionais & Validação de Contrato<br>
@@ -266,12 +266,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script>
-    // --- CENA THREE.JS (MEIO TERMO ELEGANTE: DUSK / SLATE TITANIUM) ---
+    // --- CENA THREE.JS (TWILIGHT SLATE MEIO TERMO) ---
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    // Cor de fundo: Twilight Slate Navy (Não é breu escuro, não é branco ofuscante)
-    scene.background = new THREE.Color(0x1a263d);
-    scene.fog = new THREE.FogExp2(0x1a263d, 0.0006);
+    scene.background = new THREE.Color(0x192438);
+    scene.fog = new THREE.FogExp2(0x192438, 0.0006);
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
     camera.position.set(0, 310, 420);
@@ -283,7 +282,6 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // Controles de Órbita Suaves
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
@@ -292,7 +290,7 @@
     controls.maxDistance = 900;
     controls.target.set(0, 0, 0);
 
-    // --- ILUMINAÇÃO REFINADA (DUSK SUAVE + LUZ SOLAR DOURADA + PREENCHIMENTO COOL) ---
+    // --- ILUMINAÇÃO REFINADA ---
     const ambientLight = new THREE.AmbientLight(0x718cb3, 1.4);
     scene.add(ambientLight);
 
@@ -313,7 +311,7 @@
     coolFill.position.set(-250, 300, -250);
     scene.add(coolFill);
 
-    // --- PISO METROPOLITANO REFINADO (SLATE ASPHALT & CALÇADAS) ---
+    // --- TERRENO URBANO & AVENIDAS ---
     const groundGeo = new THREE.PlaneGeometry(2400, 2400);
     const groundMat = new THREE.MeshStandardMaterial({ color: 0x18243b, roughness: 0.85, metalness: 0.2 });
     const ground = new THREE.Mesh(groundGeo, groundMat);
@@ -321,7 +319,6 @@
     ground.receiveShadow = true;
     scene.add(ground);
 
-    // Avenidas Elegantes (Asfalto Escuro com Faixas de Tráfego)
     function createAvenue(x, z, w, l, rot) {
       const road = new THREE.Mesh(
         new THREE.PlaneGeometry(w, l),
@@ -351,11 +348,11 @@
       }
     }
 
-    // --- MATERIAIS ARQUITETÔNICOS RICOS (NÃO RETÂNGULOS SIMPLES) ---
+    // --- MATERIAIS ARQUITETÔNICOS RICOS ---
     const wallStucco = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.4 });
     const wallCedar = new THREE.MeshStandardMaterial({ color: 0xa16207, roughness: 0.6 });
     const wallConcrete = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.5 });
-    const glassFacade = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.1, metalness: 0.8 });
+    const glassFacade = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.1, metalness: 0.85 });
     const roofSlate = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4 });
     const roofTerracotta = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.6 });
     const waterMat = new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.1, metalness: 0.5 });
@@ -369,7 +366,6 @@
       trunk.castShadow = true;
       group.add(trunk);
 
-      // Copa dupla em camadas
       const crown1 = new THREE.Mesh(new THREE.DodecahedronGeometry(1.5 * scale, 1), foliageMat);
       crown1.position.set(x, 3.2 * scale, z);
       crown1.castShadow = true;
@@ -381,17 +377,15 @@
       group.add(crown2);
     }
 
-    // --- MODELOS ARQUITETÔNICOS BELOS E ESCULTURAIS ---
+    // --- MODELOS ARQUITETÔNICOS COM LAYOUTS ÚNICOS E ESCULTURAIS ---
 
     // 1. NÍVEL 0: Praça com Lago Ornamental, Árvores & Bancos
     function buildScenicPark(group) {
-      // Mureta de pedra e gramado
       const lawn = new THREE.Mesh(new THREE.BoxGeometry(13, 0.4, 13), new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.8 }));
       lawn.position.y = 0.2;
       lawn.receiveShadow = true;
       group.add(lawn);
 
-      // Lago circular no centro
       const pondBorder = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.8, 0.5, 24), new THREE.MeshStandardMaterial({ color: 0x94a3b8 }));
       pondBorder.position.y = 0.25;
       group.add(pondBorder);
@@ -400,12 +394,10 @@
       pondWater.position.y = 0.26;
       group.add(pondWater);
 
-      // Chafariz / Jato de água central
       const fountainJet = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 2.0, 8), new THREE.MeshBasicMaterial({ color: 0xbae6fd }));
       fountainJet.position.y = 1.2;
       group.add(fountainJet);
 
-      // Árvores ornamentais e bancos
       addDetailedTree(group, -4.2, -4.2, 1.0);
       addDetailedTree(group, 4.2, 4.2, 0.9);
 
@@ -414,22 +406,19 @@
       group.add(bench);
     }
 
-    // 2. NÍVEL 1: Villa Moderna com Telhado Inclinado, Varanda e Pérgola
+    // 2. NÍVEL 1: Villa com Telhado Inclinado, Varanda e Pérgola
     function buildDesignerVilla(group, dayNum, commits) {
-      // Jardim frontal
       const base = new THREE.Mesh(new THREE.BoxGeometry(13, 0.4, 13), new THREE.MeshStandardMaterial({ color: 0x4ade80, roughness: 0.8 }));
       base.position.y = 0.2;
       group.add(base);
 
       const h = 6 + commits * 1.5;
 
-      // Corpo principal (Madeira Cedar + Stucco Branco)
       const mainBlock = new THREE.Mesh(new THREE.BoxGeometry(8.5, h, 8.5), wallStucco);
       mainBlock.position.set(-1, h / 2 + 0.4, -0.5);
       mainBlock.castShadow = true;
       group.add(mainBlock);
 
-      // Telhado Inclinado de 2 Águas com Cumeeira
       const roofShape = new THREE.Shape();
       roofShape.moveTo(-4.8, 0);
       roofShape.lineTo(0, 3.6);
@@ -442,13 +431,11 @@
       roof.castShadow = true;
       group.add(roof);
 
-      // Chaminé com topo
       const chimney = new THREE.Mesh(new THREE.BoxGeometry(1.2, 3.2, 1.2), roofSlate);
       chimney.position.set(1.5, h + 2.5, 0);
       chimney.castShadow = true;
       group.add(chimney);
 
-      // Pérgola lateral de madeira (Garagem coberta com ripas)
       for (let r = -3.5; r <= 3.5; r += 1.4) {
         const slat = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.2, 0.3), wallCedar);
         slat.position.set(4.2, 4.5, r);
@@ -458,86 +445,87 @@
       pergolaPillar.position.set(5.6, 2.25, 3.2);
       group.add(pergolaPillar);
 
-      // Janelas com brilho acolhedor
       const win1 = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 2.2), windowGlow);
       win1.position.set(-1, h * 0.6, 3.8);
       group.add(win1);
 
-      // Árvore no jardim da frente
       addDetailedTree(group, -4.5, 4.2, 0.85);
     }
 
-    // 3. NÍVEL 2: Edifício Corporativo Contemporâneo com Terraços Escalonados
+    // 3. NÍVEL 2: Edifício Corporativo Único (Layout em "L" com Ático Inclinado e Praça)
     function buildContemporaryOffice(group, dayNum, commits) {
       const floors = commits; // 4 a 7 andares
-      const totalH = floors * 4.5;
+      const totalH = floors * 4.6;
 
-      // Hall de Entrada Recuado com Colunas
-      const lobby = new THREE.Mesh(new THREE.BoxGeometry(11.5, 3.5, 11.5), glassFacade);
-      lobby.position.y = 1.75;
-      lobby.castShadow = true;
-      group.add(lobby);
+      // Base do Lote com Calçada e Pequena Praça de Entrada
+      const lotBase = new THREE.Mesh(new THREE.BoxGeometry(13, 0.4, 13), new THREE.MeshStandardMaterial({ color: 0x334155 }));
+      lotBase.position.y = 0.2;
+      group.add(lotBase);
 
-      // Marquise de Entrada
-      const canopy = new THREE.Mesh(new THREE.BoxGeometry(6, 0.4, 4), wallConcrete);
-      canopy.position.set(0, 3.6, 6.8);
+      // Bloco Principal 1 (Asa Leste do L)
+      const wingA = new THREE.Mesh(new THREE.BoxGeometry(6.5, totalH, 11), glassFacade);
+      wingA.position.set(-2.5, totalH / 2 + 0.4, 0);
+      wingA.castShadow = true;
+      wingA.receiveShadow = true;
+      group.add(wingA);
+
+      // Bloco Intersectante 2 (Asa Sul formando o "L")
+      const wingB = new THREE.Mesh(new THREE.BoxGeometry(5.5, totalH * 0.75, 5.5), wallStucco);
+      wingB.position.set(3.2, (totalH * 0.75) / 2 + 0.4, 2.7);
+      wingB.castShadow = true;
+      group.add(wingB);
+
+      // Ático Inclinado / Telhado Escultural com Painéis Solares
+      const roofWedge = new THREE.Mesh(new THREE.ConeGeometry(4.5, 4.5, 4), roofSlate);
+      roofWedge.rotation.y = Math.PI / 4;
+      roofWedge.position.set(-2.5, totalH + 2.2, 0);
+      roofWedge.castShadow = true;
+      group.add(roofWedge);
+
+      // Terraço Panorâmico no topo da Asa B (Jardim Suspenso)
+      const gardenSlab = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.3, 5.2), new THREE.MeshStandardMaterial({ color: 0x22c55e }));
+      gardenSlab.position.set(3.2, totalH * 0.75 + 0.55, 2.7);
+      group.add(gardenSlab);
+
+      // Árvore no terraço da Asa B
+      addDetailedTree(group, 3.2, 2.7, 0.7);
+
+      // Marquise de Entrada em Balanço
+      const canopy = new THREE.Mesh(new THREE.BoxGeometry(5, 0.3, 3.5), wallConcrete);
+      canopy.position.set(1.5, 3.8, 5.8);
       canopy.castShadow = true;
       group.add(canopy);
-
-      // Corpo Central com Fachada Cortina de Vidro e Brises Verticais
-      const tower = new THREE.Mesh(new THREE.BoxGeometry(10, totalH - 3.5, 10), glassFacade);
-      tower.position.y = (totalH - 3.5) / 2 + 3.5;
-      tower.castShadow = true;
-      group.add(tower);
-
-      // Brises de Alvenaria nas Laterais
-      for (let s of [-5.2, 5.2]) {
-        const fin = new THREE.Mesh(new THREE.BoxGeometry(0.6, totalH, 8), wallStucco);
-        fin.position.set(s, totalH / 2, 0);
-        fin.castShadow = true;
-        group.add(fin);
-      }
-
-      // Lajes estruturais brancas por andar
-      for (let f = 1; f <= floors; f++) {
-        const slab = new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.5, 10.8), wallStucco);
-        slab.position.y = f * 4.5;
-        group.add(slab);
-      }
-
-      // Rooftop Lounge (Pergolado e Vegetação no Topo)
-      const roofGarden = new THREE.Mesh(new THREE.BoxGeometry(8, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0x22c55e }));
-      roofGarden.position.y = totalH + 0.2;
-      group.add(roofGarden);
-
-      addDetailedTree(group, -2.5, -2.5, 0.6);
-      addDetailedTree(group, 2.5, 2.5, 0.6);
     }
 
-    // 4. NÍVEL 3: Arranha-Céu Escultural com Heliponto & Spire Iluminado
+    // 4. NÍVEL 3: Arranha-Céu Escultural Monumental (Torre Facetada / Tapered com Heliponto & Spire)
     function buildLandmarkSkyscraper(group, dayNum, commits) {
-      const h1 = 32;
+      const h1 = 28;
       const h2 = 24;
       const totalH = h1 + h2;
 
-      // Base com Colunas Arquitetônicas
-      const podium = new THREE.Mesh(new THREE.BoxGeometry(12.5, h1, 12.5), wallConcrete);
+      // Base Escultural Chanfrada (Octogonal / Facetada)
+      const podium = new THREE.Mesh(new THREE.CylinderGeometry(7.2, 8.5, h1, 8), wallConcrete);
       podium.position.y = h1 / 2;
       podium.castShadow = true;
+      podium.receiveShadow = true;
       group.add(podium);
 
-      // Faixas de vidro verticais embutidas
-      const glassStripe = new THREE.Mesh(new THREE.BoxGeometry(12.7, h1 - 4, 7), glassFacade);
-      glassStripe.position.y = h1 / 2;
-      group.add(glassStripe);
+      // Janelas de Vidro Azul Escuro Embutidas nas Faces
+      const glassCore = new THREE.Mesh(new THREE.CylinderGeometry(7.3, 7.3, h1 - 4, 8), glassFacade);
+      glassCore.position.y = h1 / 2;
+      group.add(glassCore);
 
-      // Torre Superior Escalonada em Vidro Azul Escuro
-      const upperTower = new THREE.Mesh(new THREE.BoxGeometry(9.5, h2, 9.5), glassFacade);
-      upperTower.position.y = h1 + h2 / 2;
-      upperTower.castShadow = true;
-      group.add(upperTower);
+      // Torre Superior que Afunila Elegantemente (Tapered Spire Tower)
+      const upperSpire = new THREE.Mesh(new THREE.ConeGeometry(6.5, h2, 8), glassFacade);
+      upperSpire.position.y = h1 + h2 / 2;
+      upperSpire.castShadow = true;
+      group.add(upperSpire);
 
-      // Coroa com Heliponto no Topo
+      // Heliponto em Balanço (Plataforma Suspensa Saliente na Lateral)
+      const helipadArm = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.8, 4.5), wallConcrete);
+      helipadArm.position.set(5.5, h1, 0);
+      group.add(helipadArm);
+
       const helipadCanvas = document.createElement('canvas');
       helipadCanvas.width = 128; helipadCanvas.height = 128;
       const hCtx = helipadCanvas.getContext('2d');
@@ -555,23 +543,23 @@
       hCtx.fillText('H', 64, 64);
 
       const helipadTex = new THREE.CanvasTexture(helipadCanvas);
-      const helipad = new THREE.Mesh(new THREE.PlaneGeometry(8.5, 8.5), new THREE.MeshBasicMaterial({ map: helipadTex }));
+      const helipad = new THREE.Mesh(new THREE.CircleGeometry(3.6, 24), new THREE.MeshBasicMaterial({ map: helipadTex }));
       helipad.rotation.x = -Math.PI / 2;
-      helipad.position.y = totalH + 0.15;
+      helipad.position.set(6.2, h1 + 0.45, 0);
       group.add(helipad);
 
-      // Antena Spire Escultural
-      const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.6, 20, 8), new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9 }));
-      spire.position.set(3.2, totalH + 10, 3.2);
+      // Pináculo Escultural com Luz Vermelha de Sinalização
+      const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.5, 22, 8), new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9 }));
+      spire.position.set(0, totalH + 11, 0);
       spire.castShadow = true;
       group.add(spire);
 
-      const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
-      beacon.position.set(3.2, totalH + 20, 3.2);
+      const beacon = new THREE.Mesh(new THREE.SphereGeometry(1.0, 16, 16), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+      beacon.position.set(0, totalH + 22, 0);
       group.add(beacon);
     }
 
-    // --- 12 MESES DE 2026 COM NOMES LIMPOS (SEM "DISTRITO TAL") ---
+    // --- 12 MESES DE 2026 COM NOMES LIMPOS ---
     const months2026 = [
       { name: "Janeiro", repo: "qa-web-cypress-conduit", scope: "Testes E2E & Mocking" },
       { name: "Fevereiro", repo: "qa-web-playwright-saucedemo", scope: "Arquitetura POM E2E" },
@@ -600,7 +588,6 @@
 
         districts.push({ x: distCenterX, z: distCenterZ, name: m.name, index: monthCounter });
 
-        // Base Paisagística do Mês
         const plaza = new THREE.Mesh(
           new THREE.PlaneGeometry(215, 165),
           new THREE.MeshStandardMaterial({ color: 0x1f2e47, roughness: 0.85 })
@@ -610,11 +597,10 @@
         plaza.receiveShadow = true;
         scene.add(plaza);
 
-        // --- LETREIRO LIMPO A 90M DE ALTURA: APENAS O NOME DO MÊS ---
+        // Letreiro Limpo a 90m de altura com apenas o nome do mês
         const signGroup = new THREE.Group();
         signGroup.position.set(distCenterX, 0, distCenterZ - 82);
 
-        // Pilares finos e elegantes
         const pilarL = new THREE.Mesh(new THREE.BoxGeometry(1.6, 92, 1.6), wallConcrete);
         pilarL.position.set(-38, 46, 0);
         signGroup.add(pilarL);
@@ -623,7 +609,6 @@
         pilarR.position.set(38, 46, 0);
         signGroup.add(pilarR);
 
-        // Placa dupla face com APENAS O NOME DO MÊS
         const signCanvas = document.createElement('canvas');
         signCanvas.width = 512; signCanvas.height = 128;
         const sCtx = signCanvas.getContext('2d');
@@ -647,7 +632,7 @@
         signGroup.add(signMesh);
         scene.add(signGroup);
 
-        // 30 LOTES = 30 DIAS DO MÊS DE 2026
+        // 30 Lotes por mês
         let day = 1;
         for (let bx = -3; bx <= 3; bx++) {
           for (let bz = -2; bz <= 2; bz++) {
@@ -670,13 +655,13 @@
               levelName = "Praça com Lago & Chafariz (Descanso)";
             } else if (commits <= 3) {
               buildDesignerVilla(lotGroup, day, commits);
-              levelName = "Villa Moderna com Varanda e Pérgola";
+              levelName = "Villa Moderna com Telhado & Pérgola";
             } else if (commits <= 7) {
               buildContemporaryOffice(lotGroup, day, commits);
-              levelName = "Edifício Corporativo com Terraço Verde";
+              levelName = "Complexo em L com Ático Inclinado";
             } else {
               buildLandmarkSkyscraper(lotGroup, day, commits);
-              levelName = "Torre Monumental com Heliponto";
+              levelName = "Torre Facetada com Heliponto & Spire";
             }
 
             scene.add(lotGroup);
@@ -700,7 +685,7 @@
       }
     }
 
-    // --- ANEL SELETOR LUMINOSO NO CHÃO ---
+    // Anel Seletor no Chão
     const selectorRing = new THREE.Mesh(
       new THREE.RingGeometry(8.5, 10, 32),
       new THREE.MeshBasicMaterial({ color: 0x38bdf8, side: THREE.DoubleSide })
@@ -709,7 +694,7 @@
     selectorRing.position.set(0, 0.25, 0);
     scene.add(selectorRing);
 
-    // --- RAYCASTER DE SELEÇÃO DE LOTES ---
+    // Raycaster para Seleção
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -748,7 +733,6 @@
       }
     });
 
-    // --- NAVEGAÇÃO SUAVE DE CÂMERA POR MESES ---
     let targetCamPos = null;
     let targetLookAt = null;
 
@@ -775,7 +759,6 @@
       focusDistrict(-1);
     }
 
-    // --- LOOP DE ANIMAÇÃO ---
     function animate() {
       requestAnimationFrame(animate);
 

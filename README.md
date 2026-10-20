@@ -1,12 +1,12 @@
 <div align="center">
 
-  <!-- Header Banner / Typing SVG Formal & Clean -->
+  <!-- Header Banner / Typing SVG -->
   <a href="https://github.com/QA-VictorValente">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Plus+Jakarta+Sans&weight=700&size=24&pause=1000&color=0284C7&center=true&vCenter=true&width=680&lines=%E2%88%9E+Victor+Valente+%7C+Analista+de+Qualidade+de+Software;Garantia+de+Qualidade+%26+Automa%C3%A7%C3%A3o+de+Testes;Valida%C3%A7%C3%A3o+de+APIs%2C+E2E+%26+Performance;Zero+Bugs.+Alta+Confiabilidade." alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com?font=Plus+Jakarta+Sans&weight=700&size=24&pause=1000&color=38BDF8&center=true&vCenter=true&width=700&lines=%E2%88%9E+Victor+Valente+%7C+QA+City+2026;Cada+Commit+Constr%C3%B3i+a+Metr%C3%B3pole;Garantia+de+Qualidade+%26+Automa%C3%A7%C3%A3o+de+Testes;Zero+Bugs.+Alta+Estabilidade+Arquitet%C3%B4nica." alt="Typing SVG" />
   </a>
 
   <p align="center">
-    <b>Analista de Qualidade de Software (QA Full / Automação)</b> com mais de <b>4 anos de experiência</b> garantindo robustez, confiabilidade e estabilidade de aplicações críticas através de testes contínuos e arquiteturas modernas de automação.
+    <b>Analista de Qualidade de Software (QA Full / Automação)</b> com mais de <b>4 anos de experiência</b> garantindo robustez, confiabilidade e performance de aplicações críticas através de testes contínuos e arquiteturas resilientes de automação.
   </p>
 
   <p align="center">
@@ -22,38 +22,47 @@
 
 ---
 
-### ⚡ Resumo Profissional
+### 🏙️ QA City 2026: A Metrópole dos Commits
 
-```json
-{
-  "nome": "Victor Valente",
-  "cargo": "Analista de Qualidade de Software (QA)",
-  "experiencia": "4+ anos",
-  "especialidades": [
-    "Automação Web E2E (Playwright, Cypress, Selenium)",
-    "Validação e Contratos de APIs (Zod, TypeScript, Postman)",
-    "Testes de Performance e Carga (Grafana k6)",
-    "Auditoria e Validação em Banco de Dados (PostgreSQL, Oracle)",
-    "Preparação Oficial ISTQB CTFL v4.0.1"
-  ],
-  "proposito": "Prevenir defeitos antes do ambiente produtivo e elevar a maturidade técnica de engenharia."
-}
-```
+> *"Na engenharia de software, cada dia do calendário é um lote urbano e cada commit realizado ergue a arquitetura da qualidade contínua."* 🏢🌿
 
----
+<div align="center">
 
-### 🎯 Escopo de Atuação & Metodologia
+  <p align="center">
+    <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank" title="Clique para entrar na cidade 3D interativa">
+      <img src="assets/devcity-banner.svg" alt="QA City 2026 - Victor Valente" width="100%" />
+    </a>
+  </p>
 
-- 🧪 **Estratégia & Planejamento:** Elaboração de planos de teste, matriz de rastreabilidade, critérios de aceite (BDD/Gherkin) e homologação com áreas de negócio.
-- 🔄 **Ciclo Completo de Testes:** Funcionais, Exploratórios, Regressão, Sanity, Smoke e Integração contínua.
-- 🤖 **Automação Resiliente:** Arquiteturas modernas com Page Object Model (POM), App Actions, validação de contratos e Network Mocking (`cy.intercept`).
-- ⚡ **Performance & Carga:** Testes de estresse e SLAs de resposta utilizando Grafana k6 com estágios progressivos.
-- 🗄️ **Auditoria & Integridade de Dados:** Validações analíticas de regras de negócio em bancos relacionais com SQL avançado.
-- 🏃 **Cultura Ágil:** Atuação próxima aos times de engenharia em rituais Scrum/Kanban e acompanhamento ponta a ponta no Jira e Azure DevOps.
+  <p align="center">
+    <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank">
+      <img src="https://img.shields.io/badge/🏙️%20EXPLORAR%20A%20CIDADE%203D%20NO%20NAVEGADOR-0284C7?style=for-the-badge&logoColor=white" alt="Explorar Cidade 3D" />
+    </a>
+  </p>
+
+</div>
+
+#### 📐 Evolução Arquitetônica dos Lotes de 2026:
+- 🌳 **Praça com Lago & Chafariz (0 Commits):** Lote paisagístico arborizado com chafariz central (dia de descanso, planejamento e refinamento de requisitos).
+- 🏡 **Villa Moderna com Telhado & Pérgola (1 a 3 Commits):** Residência com telhado inclinado de duas águas, chaminé, janelas iluminadas e pergolado lateral de madeira.
+- 🏢 **Complexo Comercial em "L" com Ático (4 a 7 Commits):** Prédio corporativo contemporâneo em layout angular com marquise de entrada, terraço verde e ático escultural.
+- 🏛️ **Torre Facetada com Heliponto (8+ Commits):** Arranha-céu monumental com corpo octogonal que afunila no topo, heliponto em balanço e antena spire com sinalização de topo.
 
 ---
 
-### 🛠️ Tecnologias & Ferramentas
+### 🏛️ Os 5 Grandes Complexos da Cidade (Projetos em Destaque)
+
+| Complexo | Repositório | Foco & Arquitetura de Teste | Stack |
+| :--- | :--- | :--- | :--- |
+| 🧪 **Citadela E2E** | [**qa-web-playwright-saucedemo**](https://github.com/QA-VictorValente/qa-web-playwright-saucedemo) | Automação E2E moderna utilizando Page Object Model (POM), relatórios detalhados e TypeScript. | `Playwright` `TypeScript` `POM` |
+| 🌐 **Complexo Cypress Matrix** | [**qa-web-cypress-conduit**](https://github.com/QA-VictorValente/qa-web-cypress-conduit) | Testes E2E robustos com Cypress, arquitetura orientada a App Actions e Network Mocking via `cy.intercept`. | `Cypress` `Network Mocking` |
+| 🔌 **Torre de Contratos Zod** | [**qa-api-playwright-serverest**](https://github.com/QA-VictorValente/qa-api-playwright-serverest) | Testes automatizados de API com validação estrita de schemas e contratos de endpoints REST usando Zod. | `Playwright API` `Zod` `REST` |
+| ⚡ **Reator de Performance k6** | [**qa-perf-k6-serverest**](https://github.com/QA-VictorValente/qa-perf-k6-serverest) | Testes de performance, estresse e validação estrita de SLAs de latência (p95 < 250ms) com Grafana k6. | `Grafana k6` `Performance` |
+| 🎓 **Academia Central ISTQB** | [**CTFL-Academy**](https://github.com/QA-VictorValente/CTFL-Academy) | Plataforma interativa de preparação oficial para a certificação internacional ISTQB CTFL v4.0.1. | `Next.js` `ISTQB CTFL` |
+
+---
+
+### 🛠️ Tecnologias & Ferramentas Construtivas
 
 <div align="center">
 
@@ -97,19 +106,7 @@
 
 ---
 
-### 🚀 Projetos em Destaque
-
-| Projeto | Descrição | Stack |
-| :--- | :--- | :--- |
-| 🧪 [**qa-web-playwright-saucedemo**](https://github.com/QA-VictorValente/qa-web-playwright-saucedemo) | Automação E2E moderna utilizando Page Object Model (POM), relatórios detalhados e TypeScript. | `Playwright` `TypeScript` `POM` |
-| 🌐 [**qa-web-cypress-conduit**](https://github.com/QA-VictorValente/qa-web-cypress-conduit) | Testes E2E robustos com Cypress, arquitetura em App Actions e Network Mocking via `cy.intercept`. | `Cypress` `Network Mocking` |
-| 🔌 [**qa-api-playwright-serverest**](https://github.com/QA-VictorValente/qa-api-playwright-serverest) | Testes automatizados de API com validação estrita de schemas e contratos usando Zod. | `Playwright API` `Zod` `REST` |
-| ⚡ [**qa-perf-k6-serverest**](https://github.com/QA-VictorValente/qa-perf-k6-serverest) | Testes de performance, estresse e validação de SLAs de latência com Grafana k6. | `Grafana k6` `Performance` |
-| 🎓 [**CTFL-Academy**](https://github.com/QA-VictorValente/CTFL-Academy) | Plataforma interativa de preparação para a certificação oficial ISTQB CTFL v4.0.1. | `Next.js` `ISTQB CTFL` |
-
----
-
-### 📊 Métricas & Desempenho
+### 📊 Métricas & Desempenho no GitHub
 
 <div align="center">
 
@@ -118,41 +115,13 @@
 
   <br/><br/>
 
-  <img height="155em" src="https://streak-stats.demolab.com?user=QA-VictorValente&theme=tokyonight&border_color=0284c7&border_radius=8" alt="GitHub Streak" />
+  <img height="155em" src="https://streak-stats.demolab.com?user=QA-VictorValente&theme=tokyonight&border=0284c7&border_radius=8" alt="GitHub Streak" />
 
 </div>
 
 ---
 
-### 🏙️ QA City: Metrópole da Qualidade
-
-<div align="center">
-
-> *"Cada dia é um lote, cada commit constrói a cidade da engenharia de software."* 🏢🌿
-
-<p align="center">
-  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank" title="Clique para explorar a cidade interativa 3D">
-    <img src="assets/devcity-banner.svg" alt="QA City - Victor Valente" width="100%" />
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank">
-    <img src="https://img.shields.io/badge/🏙️%20EXPLORAR%20CIDADE%20INTERATIVA%203D-0284C7?style=for-the-badge&logoColor=white" alt="Explorar Cidade 3D" />
-  </a>
-</p>
-
-</div>
-
-#### 🏛️ Arquitetura Visual dos Lotes:
-- 🌳 **Praça com Jardim (0 Commits):** Lote arborizado com gramado, caminho de pedras e bancos (dia de descanso/planejamento).
-- 🏡 **Casa com Telhado Inclinado (1 a 3 Commits):** Residência moderna com telhado gabled, chaminé e jardim frontal.
-- 🏢 **Edifício Comercial com Terraço (4 a 7 Commits):** Prédio corporativo com fachada envidraçada e jardim suspenso no topo.
-- 🏛️ **Arranha-Céu com Heliponto (8+ Commits):** Torre monumental icônica com heliponto, antena de sinalização e alta produtividade.
-
----
-
-### 🟩 Histórico Contínuo de Commits (365 Dias)
+### 🟩 Histórico Contínuo de Commits 2026
 
 <div align="center">
   <img src="https://ghchart.rshah.org/0284c7/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
