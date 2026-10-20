@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>QA DevCity 3D // Cidade Povoada por Commits - Victor Valente</title>
+  <title>QA DevCity 3D // Visão Aérea dos Commits - Victor Valente</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-    body, html { width: 100%; height: 100%; overflow: hidden; background: #070e20; font-family: 'Rajdhani', sans-serif; color: #fff; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #cce4fc; font-family: 'Rajdhani', sans-serif; color: #1e293b; }
     #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 
-    /* HUD OVERLAYS */
+    /* HUD OVERLAYS (TEMA CLARO E CRISTALINO) */
     .hud-layer { position: absolute; z-index: 10; pointer-events: none; }
     
     /* Top Header */
@@ -20,24 +20,24 @@
       top: 16px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center;
     }
     .brand-box {
-      background: rgba(10, 18, 38, 0.9);
-      border: 1px solid #00f0ff;
-      border-left: 5px solid #00f0ff;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #0284c7;
+      border-left: 5px solid #0284c7;
       padding: 10px 18px;
       backdrop-filter: blur(8px);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     .brand-title {
-      font-size: 20px; font-weight: 700; color: #00f0ff; letter-spacing: 2px; text-transform: uppercase;
+      font-size: 20px; font-weight: 700; color: #0284c7; letter-spacing: 1.5px; text-transform: uppercase;
       display: flex; align-items: center; gap: 8px;
     }
-    .brand-sub { font-size: 13px; color: #a4b3d6; font-family: 'Fira Code', monospace; }
+    .brand-sub { font-size: 13px; color: #64748b; font-family: 'Fira Code', monospace; font-weight: 600; }
     
     .top-actions { display: flex; gap: 10px; pointer-events: auto; }
     .hud-btn {
-      background: rgba(13, 22, 48, 0.9);
-      border: 1px solid #00f0ff;
-      color: #00f0ff;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #0284c7;
+      color: #0284c7;
       padding: 8px 16px;
       font-size: 14px;
       font-weight: 700;
@@ -49,54 +49,56 @@
       gap: 6px;
       transition: all 0.2s;
       text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
     .hud-btn:hover {
-      background: #00f0ff; color: #070e20; box-shadow: 0 0 15px #00f0ff;
+      background: #0284c7; color: #ffffff; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
     }
     .hud-btn.active {
-      background: #00f0ff; color: #070e20;
+      background: #0284c7; color: #ffffff;
     }
 
     /* Radar Mini-Map */
     .radar-box {
       top: 95px; left: 20px;
-      width: 140px; height: 140px;
-      background: rgba(10, 18, 38, 0.9);
-      border: 1px solid rgba(0, 240, 255, 0.5);
+      width: 145px; height: 145px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid #0284c7;
       border-radius: 50%;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     #radar-canvas { width: 100%; height: 100%; }
 
-    /* Speedometer & Vehicle Toggle */
-    .vehicle-hud {
+    /* Altitude & Speedometer */
+    .flight-hud {
       bottom: 25px; left: 20px;
-      background: rgba(10, 18, 38, 0.9);
-      border: 1px solid #00f0ff;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #0284c7;
       padding: 12px 18px;
       backdrop-filter: blur(8px);
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       pointer-events: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
-    .speed-display { font-family: 'Fira Code', monospace; font-size: 26px; font-weight: 700; color: #00f0ff; }
-    .speed-unit { font-size: 12px; color: #a4b3d6; margin-left: 4px; }
-    .mode-switch-group { display: flex; gap: 8px; }
+    .flight-metric { font-family: 'Fira Code', monospace; font-size: 20px; font-weight: 700; color: #0284c7; }
+    .flight-unit { font-size: 11px; color: #64748b; margin-left: 4px; }
+    .camera-select-row { display: flex; gap: 6px; margin-top: 4px; }
 
-    /* Proximity Hologram Card (Detalhamento dos Commits e Dias) */
+    /* Proximity Hologram Card (Detalhamento do Dia Visto de Cima) */
     .holo-card {
       bottom: 25px; right: 25px;
       width: 420px;
-      background: rgba(8, 16, 36, 0.95);
-      border: 1px solid #00f0ff;
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.15);
+      background: rgba(255, 255, 255, 0.96);
+      border: 2px solid #0284c7;
+      box-shadow: 0 10px 30px rgba(2, 132, 199, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
       padding: 22px;
       backdrop-filter: blur(12px);
       transform: translateX(480px);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
       opacity: 0;
       pointer-events: auto;
     }
@@ -109,50 +111,52 @@
     }
     .holo-tag {
       font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
-      color: #070e20; background: #00f0ff; padding: 4px 10px;
-      text-transform: uppercase; font-family: 'Fira Code', monospace;
+      color: #ffffff; background: #0284c7; padding: 4px 10px;
+      text-transform: uppercase; font-family: 'Fira Code', monospace; border-radius: 2px;
     }
     .holo-commits-count {
-      font-size: 14px; font-weight: 700; color: #39d353; font-family: 'Fira Code', monospace;
+      font-size: 15px; font-weight: 700; color: #16a34a; font-family: 'Fira Code', monospace;
     }
-    .holo-title { font-size: 24px; font-weight: 700; color: #ffffff; margin-bottom: 6px; letter-spacing: 1px; }
-    .holo-desc { font-size: 15px; color: #d6e2ff; line-height: 1.45; margin-bottom: 12px; }
+    .holo-title { font-size: 23px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    .holo-desc { font-size: 14px; color: #334155; line-height: 1.45; margin-bottom: 12px; font-weight: 500; }
     .holo-meta {
-      background: rgba(0, 240, 255, 0.08);
-      border-left: 4px solid #00f0ff;
+      background: #f1f5f9;
+      border-left: 4px solid #0284c7;
       padding: 10px 12px;
       margin-bottom: 14px;
       font-size: 13px;
       font-family: 'Fira Code', monospace;
-      color: #64ffda;
+      color: #0369a1;
       line-height: 1.4;
     }
     .holo-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
     .holo-pill {
-      background: #14234b; border: 1px solid #233c7d; color: #a5c3ff;
-      font-size: 12px; padding: 3px 8px; border-radius: 3px; font-family: 'Fira Code', monospace;
+      background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1;
+      font-size: 11px; padding: 3px 8px; border-radius: 3px; font-family: 'Fira Code', monospace; font-weight: 600;
     }
     .holo-link {
-      display: block; text-align: center; background: #00f0ff; color: #070e20;
-      text-decoration: none; font-weight: 700; padding: 10px; font-size: 14px; letter-spacing: 1.5px;
-      transition: all 0.2s;
+      display: block; text-align: center; background: #0284c7; color: #ffffff;
+      text-decoration: none; font-weight: 700; padding: 10px; font-size: 13px; letter-spacing: 1px;
+      transition: all 0.2s; border-radius: 2px;
     }
-    .holo-link:hover { background: #64ffda; box-shadow: 0 0 15px #64ffda; }
+    .holo-link:hover { background: #0369a1; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4); }
 
     /* Controls Helper */
     .controls-hint {
       bottom: 25px; left: 50%; transform: translateX(-50%);
-      background: rgba(10, 18, 38, 0.9);
-      border: 1px solid rgba(0, 240, 255, 0.4);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #0284c7;
       padding: 8px 18px;
       font-size: 13px;
-      color: #a4b3d6;
+      color: #475569;
       font-family: 'Fira Code', monospace;
       display: flex;
       gap: 16px;
       pointer-events: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      font-weight: 600;
     }
-    .controls-hint span { color: #00f0ff; font-weight: 600; }
+    .controls-hint span { color: #0284c7; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -162,34 +166,35 @@
   <!-- TOP BAR -->
   <div class="hud-layer top-bar">
     <div class="brand-box">
-      <div class="brand-title">🏙️ QA DevCity 3D // Metrópole dos Commits</div>
-      <div class="brand-sub">Victor Valente // 365 Dias de Qualidade e Código</div>
+      <div class="brand-title">✈️ QA DevCity 3D // Visão Aérea dos Commits</div>
+      <div class="brand-sub">Victor Valente // Cidade Clara Povoada por 365 Dias de Código</div>
     </div>
     <div class="top-actions">
       <button id="sound-btn" class="hud-btn" onclick="toggleSound()">🔊 SOM: ON</button>
-      <button id="camera-btn" class="hud-btn" onclick="toggleCameraView()">🎥 CÂMERA: 3ª PESSOA</button>
-      <a href="https://github.com/QA-VictorValente" target="_blank" class="hud-btn">⭐ GITHUB PROFILE</a>
+      <button id="camera-btn" class="hud-btn active" onclick="setCamAngle('aerial')">🦅 VISÃO AÉREA ALTA</button>
+      <button id="cam-iso-btn" class="hud-btn" onclick="setCamAngle('iso')">📐 ISOMÉTRICA</button>
+      <a href="https://github.com/QA-VictorValente" target="_blank" class="hud-btn">⭐ GITHUB</a>
     </div>
   </div>
 
   <!-- RADAR MINI MAP -->
   <div class="hud-layer radar-box">
-    <canvas id="radar-canvas" width="140" height="140"></canvas>
+    <canvas id="radar-canvas" width="145" height="145"></canvas>
   </div>
 
-  <!-- VEHICLE SWITCH & SPEEDOMETER -->
-  <div class="hud-layer vehicle-hud">
+  <!-- FLIGHT HUD (ALTITUDE & VELOCIDADE) -->
+  <div class="hud-layer flight-hud">
     <div>
-      <span class="speed-display" id="speed-val">80</span>
-      <span class="speed-unit">KM/H</span>
+      <span class="flight-metric" id="alt-val">120</span>
+      <span class="flight-unit">METROS DE ALTURA</span>
     </div>
-    <div class="mode-switch-group">
-      <button id="mode-car" class="hud-btn" onclick="setVehicleMode('car')">🚗 CARRO</button>
-      <button id="mode-plane" class="hud-btn active" onclick="setVehicleMode('plane')">✈️ AVIÃO (CRUZEIRO)</button>
+    <div>
+      <span class="flight-metric" id="speed-val">95</span>
+      <span class="flight-unit">KM/H (CRUZEIRO)</span>
     </div>
   </div>
 
-  <!-- HOLOGRAPHIC PROXIMITY CARD (EXPLICAÇÃO DO DIA E COMMIT) -->
+  <!-- HOLOGRAPHIC PROXIMITY CARD (EXPLICAÇÃO DO DIA CLARA E VISÍVEL) -->
   <div id="holo-card" class="hud-layer holo-card">
     <div class="holo-header-row">
       <div id="holo-tag" class="holo-tag">DISTRITO OUTUBRO</div>
@@ -206,43 +211,42 @@
       <span class="holo-pill">TypeScript</span>
       <span class="holo-pill">Next.js</span>
     </div>
-    <a id="holo-link" href="https://github.com/QA-VictorValente" target="_blank" class="holo-link">VER ATIVIDADE NO GITHUB ➔</a>
+    <a id="holo-link" href="https://github.com/QA-VictorValente" target="_blank" class="holo-link">ABRIR ATIVIDADE NO GITHUB ➔</a>
   </div>
 
   <!-- CONTROLS HINT -->
   <div class="hud-layer controls-hint">
-    <div><span>A/D</span>: Curvas / Direção</div>
-    <div><span>Espaço</span>: Subir Altitude</div>
-    <div><span>Shift</span>: Descer Altitude</div>
-    <div><span>V</span>: Trocar Veículo (Carro / Avião)</div>
+    <div><span>A / D</span>: Fazer Curvas</div>
+    <div><span>Espaço</span>: Subir Mais Alto</div>
+    <div><span>Shift</span>: Descer Mais Baixo</div>
+    <div><span>W / S</span>: Acelerar / Desacelerar</div>
   </div>
 
-  <!-- THREE.JS & SIMULATION ENGINE -->
+  <!-- THREE.JS SIMULATION -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    // --- AUDIO SYNTHESIS VIA WEB AUDIO API ---
+    // --- AUDIO SYNTHESIS ---
     let audioCtx = null, soundEnabled = true, engineOsc = null, engineGain = null;
-
     function initAudio() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         engineOsc = audioCtx.createOscillator();
         engineGain = audioCtx.createGain();
         engineOsc.type = 'triangle';
-        engineOsc.frequency.setValueAtTime(80, audioCtx.currentTime);
+        engineOsc.frequency.setValueAtTime(95, audioCtx.currentTime);
         engineGain.gain.setValueAtTime(0.012, audioCtx.currentTime);
         engineOsc.connect(engineGain);
         engineGain.connect(audioCtx.destination);
         engineOsc.start();
       }
     }
-    function playBeep(freq = 880, dur = 0.08) {
+    function playBeep(freq = 680, dur = 0.08) {
       if (!soundEnabled || !audioCtx) return;
       try {
         const osc = audioCtx.createOscillator();
         const g = audioCtx.createGain();
         osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        g.gain.setValueAtTime(0.035, audioCtx.currentTime);
         g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
         osc.connect(g);
         g.connect(audioCtx.destination);
@@ -256,287 +260,278 @@
       if (engineGain) engineGain.gain.setValueAtTime(soundEnabled ? 0.012 : 0, audioCtx.currentTime);
     }
 
-    // --- THREE.JS SCENE SETUP (CLARA, VIBRANTE E ILUMINADA) ---
+    // --- THREE.JS SCENE SETUP (MUITO CLARA, DIURNA E NÍTIDA) ---
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a142c); // Céu mais claro e nítido
-    scene.fog = new THREE.FogExp2(0x0a142c, 0.0012); // Nevoeiro suave para ampla visibilidade
+    scene.background = new THREE.Color(0xd4e9ff); // Céu azul claro diurno e iluminado
+    scene.fog = new THREE.FogExp2(0xd4e9ff, 0.0005); // Nevoeiro mínimo para máxima visibilidade de cima
 
-    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 2000);
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.5, 3000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // --- ILUMINAÇÃO REFORÇADA (CIDADE BEM CLARA E VISÍVEL) ---
-    const ambientLight = new THREE.AmbientLight(0x8cb0e8, 1.8);
+    // --- ILUMINAÇÃO SOLAR FORTE E CLARA ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xdcf0ff, 1.6);
-    sunLight.position.set(150, 300, 150);
+    const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+    sunLight.position.set(250, 600, 250);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.camera.near = 0.5;
+    sunLight.shadow.camera.far = 1500;
+    sunLight.shadow.camera.left = -600;
+    sunLight.shadow.camera.right = 600;
+    sunLight.shadow.camera.top = 600;
+    sunLight.shadow.camera.bottom = -600;
     scene.add(sunLight);
 
-    const cyanRim = new THREE.DirectionalLight(0x00f0ff, 0.9);
-    cyanRim.position.set(-200, 200, -200);
-    scene.add(cyanRim);
+    const skyLight = new THREE.HemisphereLight(0xe8f4ff, 0x8ba6c9, 0.8);
+    scene.add(skyLight);
 
-    // --- PISO URBANO E MALHA DE AVENIDAS ---
-    const groundGeo = new THREE.PlaneGeometry(1600, 1600);
-    const groundMat = new THREE.MeshStandardMaterial({ color: 0x0c152e, roughness: 0.6, metalness: 0.4 });
+    // --- TERRENO URBANO CLARO COM GRAMADOS E AVENIDAS ---
+    const groundGeo = new THREE.PlaneGeometry(2000, 2000);
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0xd8e4f2, roughness: 0.8 });
     const ground = new THREE.Mesh(groundGeo, groundMat);
     ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
     scene.add(ground);
 
-    const gridHelper = new THREE.GridHelper(1600, 100, 0x00f0ff, 0x192e62);
-    gridHelper.position.y = 0.05;
-    scene.add(gridHelper);
+    // Malha sutil de quarteirões
+    const grid = new THREE.GridHelper(2000, 80, 0x0284c7, 0xb8cde3);
+    grid.position.y = 0.05;
+    scene.add(grid);
 
-    // Avenidas Principais
-    function createRoad(x, z, w, l, rot) {
-      const road = new THREE.Mesh(new THREE.PlaneGeometry(w, l), new THREE.MeshBasicMaterial({ color: 0x111c38 }));
+    // Avenidas Principais (Asfalto Moderno Cinza Escuro e Faixas Amarelas/Brancas)
+    function createAvenue(x, z, w, l, rot) {
+      const road = new THREE.Mesh(new THREE.PlaneGeometry(w, l), new THREE.MeshStandardMaterial({ color: 0x334155 }));
       road.rotation.x = -Math.PI / 2;
       if (rot) road.rotation.z = Math.PI / 2;
       road.position.set(x, 0.08, z);
+      road.receiveShadow = true;
       scene.add(road);
 
-      const line = new THREE.Mesh(new THREE.PlaneGeometry(0.8, l), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
-      line.rotation.x = -Math.PI / 2;
-      if (rot) line.rotation.z = Math.PI / 2;
-      line.position.set(x, 0.09, z);
-      scene.add(line);
+      const centerLine = new THREE.Mesh(new THREE.PlaneGeometry(0.8, l), new THREE.MeshBasicMaterial({ color: 0xfacc15 }));
+      centerLine.rotation.x = -Math.PI / 2;
+      if (rot) centerLine.rotation.z = Math.PI / 2;
+      centerLine.position.set(x, 0.09, z);
+      scene.add(centerLine);
     }
-    createRoad(0, 0, 16, 1400, false);
-    createRoad(0, 0, 16, 1400, true);
+    createAvenue(0, 0, 18, 1600, false);
+    createAvenue(0, 0, 18, 1600, true);
     for (let offset = -450; offset <= 450; offset += 150) {
       if (offset !== 0) {
-        createRoad(offset, 0, 10, 1400, false);
-        createRoad(0, offset, 10, 1400, true);
+        createAvenue(offset, 0, 12, 1600, false);
+        createAvenue(0, offset, 12, 1600, true);
       }
     }
 
-    // --- CRIAÇÃO DOS 12 DISTRITOS MENSAIS E 365 CASAS DE COMMITS ---
+    // --- 12 DISTRITOS MENSAIS E 365 CASAS COM DATAS VISTAS DE CIMA ---
     const months = [
-      { name: "Janeiro", color: 0x00f0ff, repo: "qa-web-cypress-conduit", scope: "Testes E2E & Mocking" },
-      { name: "Fevereiro", color: 0x2ead33, repo: "qa-web-playwright-saucedemo", scope: "Arquitetura POM E2E" },
-      { name: "Março", color: 0x7d64ff, repo: "qa-perf-k6-serverest", scope: "Testes de Carga & SLAs" },
-      { name: "Abril", color: 0xff6c37, repo: "qa-api-playwright-serverest", scope: "Schemas Zod & APIs" },
-      { name: "Maio", color: 0xffd700, repo: "CTFL-Academy", scope: "ISTQB Preparação v4.0.1" },
-      { name: "Junho", color: 0x00f0ff, repo: "qa-web-playwright-saucedemo", scope: "Integração Contínua CI/CD" },
-      { name: "Julho", color: 0x2ead33, repo: "qa-web-cypress-conduit", scope: "Automação com App Actions" },
-      { name: "Agosto", color: 0x7d64ff, repo: "qa-perf-k6-serverest", scope: "Validação de Performance p95" },
-      { name: "Setembro", color: 0xff6c37, repo: "qa-api-playwright-serverest", scope: "Contratos REST & Postman" },
-      { name: "Outubro", color: 0x00f0ff, repo: "CTFL-Academy", scope: "Qualidade Contínua & ISTQB" },
-      { name: "Novembro", color: 0x2ead33, repo: "qa-web-playwright-saucedemo", scope: "Testes de Regressão & Sanity" },
-      { name: "Dezembro", color: 0xffd700, repo: "QA-VictorValente", scope: "Planejamento Anual de QA" }
+      { name: "Janeiro", color: "#0284c7", roofHex: 0x0284c7, repo: "qa-web-cypress-conduit", scope: "Testes E2E & Mocking" },
+      { name: "Fevereiro", color: "#16a34a", roofHex: 0x16a34a, repo: "qa-web-playwright-saucedemo", scope: "Arquitetura POM E2E" },
+      { name: "Março", color: "#8b5cf6", roofHex: 0x8b5cf6, repo: "qa-perf-k6-serverest", scope: "Testes de Carga & SLAs" },
+      { name: "Abril", color: "#ea580c", roofHex: 0xea580c, repo: "qa-api-playwright-serverest", scope: "Schemas Zod & APIs" },
+      { name: "Maio", color: "#ca8a04", roofHex: 0xca8a04, repo: "CTFL-Academy", scope: "ISTQB Preparação v4.0.1" },
+      { name: "Junho", color: "#0284c7", roofHex: 0x0284c7, repo: "qa-web-playwright-saucedemo", scope: "Integração Contínua CI/CD" },
+      { name: "Julho", color: "#16a34a", roofHex: 0x16a34a, repo: "qa-web-cypress-conduit", scope: "Automação com App Actions" },
+      { name: "Agosto", color: "#8b5cf6", roofHex: 0x8b5cf6, repo: "qa-perf-k6-serverest", scope: "Validação de Performance p95" },
+      { name: "Setembro", color: "#ea580c", roofHex: 0xea580c, repo: "qa-api-playwright-serverest", scope: "Contratos REST & Postman" },
+      { name: "Outubro", color: "#0284c7", roofHex: 0x0284c7, repo: "CTFL-Academy", scope: "Qualidade Contínua & ISTQB" },
+      { name: "Novembro", color: "#16a34a", roofHex: 0x16a34a, repo: "qa-web-playwright-saucedemo", scope: "Testes de Regressão & Sanity" },
+      { name: "Dezembro", color: "#ca8a04", roofHex: 0xca8a04, repo: "QA-VictorValente", scope: "Planejamento Anual de QA" }
     ];
 
     const commitBuildings = [];
     const districtCenters = [];
 
-    // Posicionando os 12 distritos em uma grade 4x3 ao redor da cidade
+    // Helper: Gerar textura com o número do dia desenhado no teto
+    function createRoofTexture(dayNum, colorStr) {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const cx = c.getContext('2d');
+      cx.fillStyle = colorStr;
+      cx.fillRect(0, 0, 128, 128);
+      cx.strokeStyle = '#ffffff';
+      cx.lineWidth = 6;
+      cx.strokeRect(3, 3, 122, 122);
+      cx.fillStyle = '#ffffff';
+      cx.font = 'bold 58px Rajdhani, sans-serif';
+      cx.textAlign = 'center';
+      cx.textBaseline = 'middle';
+      cx.fillText(dayNum, 64, 64);
+      return new THREE.CanvasTexture(c);
+    }
+
     let monthIdx = 0;
     for (let gx = -1.5; gx <= 1.5; gx += 1) {
       for (let gz = -1; gz <= 1; gz += 1) {
         if (monthIdx >= 12) break;
         const m = months[monthIdx];
-        const distCenterX = gx * 260;
-        const distCenterZ = gz * 260;
+        const distCenterX = gx * 270;
+        const distCenterZ = gz * 270;
 
-        districtCenters.push({ x: distCenterX, z: distCenterZ, name: m.name, color: m.color });
+        districtCenters.push({ x: distCenterX, z: distCenterZ, name: m.name });
 
-        // Distrito Banner Holográfico Flutuante
-        const bannerGeo = new THREE.PlaneGeometry(80, 16);
-        const canvas = document.createElement('canvas');
-        canvas.width = 512; canvas.height = 128;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'rgba(10, 20, 48, 0.9)';
-        ctx.fillRect(0, 0, 512, 128);
-        ctx.strokeStyle = '#00f0ff';
-        ctx.lineWidth = 6;
-        ctx.strokeRect(6, 6, 500, 116);
-        ctx.fillStyle = '#00f0ff';
-        ctx.font = 'bold 44px Rajdhani, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(`DISTRITO ${m.name.toUpperCase()}`, 256, 75);
+        // Praça / Gramado do Distrito (Base Verde Clara)
+        const plazaGeo = new THREE.PlaneGeometry(190, 150);
+        const plazaMat = new THREE.MeshStandardMaterial({ color: 0xcbe6cd, roughness: 0.9 });
+        const plaza = new THREE.Mesh(plazaGeo, plazaMat);
+        plaza.rotation.x = -Math.PI / 2;
+        plaza.position.set(distCenterX, 0.06, distCenterZ);
+        plaza.receiveShadow = true;
+        scene.add(plaza);
 
-        const bannerTex = new THREE.CanvasTexture(canvas);
-        const bannerMesh = new THREE.Mesh(bannerGeo, new THREE.MeshBasicMaterial({ map: bannerTex, side: THREE.DoubleSide, transparent: true }));
-        bannerMesh.position.set(distCenterX, 65, distCenterZ);
-        scene.add(bannerMesh);
+        // Letreiro Gigante do Mês Flutuando (Legível perfeitamente de cima)
+        const signCanvas = document.createElement('canvas');
+        signCanvas.width = 512; signCanvas.height = 128;
+        const sCtx = signCanvas.getContext('2d');
+        sCtx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        sCtx.fillRect(0, 0, 512, 128);
+        sCtx.strokeStyle = m.color;
+        sCtx.lineWidth = 8;
+        sCtx.strokeRect(4, 4, 504, 120);
+        sCtx.fillStyle = m.color;
+        sCtx.font = 'bold 50px Rajdhani, sans-serif';
+        sCtx.textAlign = 'center';
+        sCtx.textBaseline = 'middle';
+        sCtx.fillText(`📅 ${m.name.toUpperCase()}`, 256, 64);
 
-        // Gerar cerca de 30 casinhas/prédios para cada dia do mês
-        let dayCounter = 1;
+        const signTex = new THREE.CanvasTexture(signCanvas);
+        const signMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(75, 18),
+          new THREE.MeshBasicMaterial({ map: signTex, side: THREE.DoubleSide })
+        );
+        signMesh.position.set(distCenterX, 55, distCenterZ);
+        scene.add(signMesh);
+
+        // 30 Casas e Edifícios por Mês (1 por Dia)
+        let dayNum = 1;
         for (let bx = -3; bx <= 3; bx++) {
           for (let bz = -2; bz <= 2; bz++) {
-            if (dayCounter > 30) break;
-            const houseX = distCenterX + bx * 24 + (Math.random() - 0.5) * 4;
-            const houseZ = distCenterZ + bz * 24 + (Math.random() - 0.5) * 4;
+            if (dayNum > 30) break;
+            const houseX = distCenterX + bx * 24;
+            const houseZ = distCenterZ + bz * 24;
 
-            // Commits no dia (peso maior em Outubro, Setembro e meses chave)
-            let commits = Math.floor(Math.random() * 7);
+            // Commits no dia
+            let commits = Math.floor(Math.random() * 6);
             if (m.name === "Outubro" || m.name === "Setembro" || m.name === "Agosto") {
               commits = Math.floor(Math.random() * 9) + 2;
             }
 
-            // Altura do edifício proporcional aos commits
-            const h = commits === 0 ? 3.5 : 8 + commits * 5.5;
-            const w = 9 + Math.random() * 3;
+            // Altura clara: Dia sem commit = Casa térrea charmosa (4m); commits altos = Edifício corporativo
+            const h = commits === 0 ? 4 : 8 + commits * 5.5;
+            const w = 11;
 
-            // Cores do edifício baseadas na intensidade
-            let houseColor = 0x16264d;
-            let roofColor = 0x224180;
-            if (commits >= 3) { houseColor = 0x1b3c73; roofColor = 0x00f0ff; }
-            if (commits >= 6) { houseColor = 0x1f5446; roofColor = 0x39d353; }
-            if (commits >= 8) { houseColor = 0x4d3810; roofColor = 0xffd700; }
+            // Paredes Brancas / Arquitetura Moderna e Limpa
+            const wallMat = new THREE.MeshStandardMaterial({
+              color: commits >= 6 ? 0xffffff : 0xf1f5f9,
+              roughness: 0.3,
+              metalness: 0.2
+            });
+            const house = new THREE.Mesh(new THREE.BoxGeometry(w, h, w), wallMat);
+            house.position.set(houseX, h / 2, houseZ);
+            house.castShadow = true;
+            house.receiveShadow = true;
+            scene.add(house);
 
-            const building = new THREE.Mesh(
-              new THREE.BoxGeometry(w, h, w),
-              new THREE.MeshStandardMaterial({ color: houseColor, roughness: 0.3, metalness: 0.7 })
-            );
-            building.position.set(houseX, h / 2, houseZ);
-            scene.add(building);
-
-            // Teto Luminoso Indicador
+            // Teto com o NÚMERO DO DIA gravado (Visível perfeitamente do avião!)
+            const roofColor = commits === 0 ? "#94a3b8" : (commits >= 6 ? "#16a34a" : m.color);
+            const roofTex = createRoofTexture(dayNum, roofColor);
             const roof = new THREE.Mesh(
-              new THREE.PlaneGeometry(w * 0.9, w * 0.9),
-              new THREE.MeshBasicMaterial({ color: roofColor })
+              new THREE.PlaneGeometry(w * 0.95, w * 0.95),
+              new THREE.MeshBasicMaterial({ map: roofTex })
             );
             roof.rotation.x = -Math.PI / 2;
             roof.position.set(houseX, h + 0.1, houseZ);
             scene.add(roof);
 
-            // Antena/Pico para dias de alta produtividade (commits >= 6)
-            if (commits >= 6) {
-              const spire = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.3, 0.3, 12, 8),
-                new THREE.MeshBasicMaterial({ color: roofColor })
-              );
-              spire.position.set(houseX, h + 6, houseZ);
-              scene.add(spire);
-            }
-
-            // Metadados do Dia
-            building.userData = {
-              day: `${dayCounter} de ${m.name} de 2026`,
+            house.userData = {
+              day: `${dayNum} de ${m.name} de 2026`,
               district: `DISTRITO ${m.name.toUpperCase()}`,
               commits: commits,
               repo: m.repo,
               scope: m.scope,
               link: `https://github.com/QA-VictorValente/${m.repo}`
             };
-            commitBuildings.push(building);
+            commitBuildings.push(house);
 
-            dayCounter++;
+            dayNum++;
           }
         }
         monthIdx++;
       }
     }
 
-    // --- MONUMENTO CENTRAL À QUALIDADE (CITADELA ISTQB) ---
-    const monumentGroup = new THREE.Group();
-    const centralPillar = new THREE.Mesh(
-      new THREE.CylinderGeometry(14, 20, 150, 8),
-      new THREE.MeshStandardMaterial({ color: 0x1a2e5c, roughness: 0.2, metalness: 0.9 })
+    // --- MONUMENTO CENTRAL À QUALIDADE (ISTQB ACADEMY) ---
+    const monument = new THREE.Mesh(
+      new THREE.CylinderGeometry(14, 18, 120, 8),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.4 })
     );
-    centralPillar.position.y = 75;
-    monumentGroup.add(centralPillar);
+    monument.position.set(0, 60, 0);
+    monument.castShadow = true;
+    scene.add(monument);
 
-    const goldenCrown = new THREE.Mesh(
-      new THREE.TorusGeometry(26, 2, 16, 32),
-      new THREE.MeshBasicMaterial({ color: 0xffd700 })
+    const crown = new THREE.Mesh(
+      new THREE.TorusGeometry(22, 2.5, 16, 32),
+      new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.2, metalness: 0.8 })
     );
-    goldenCrown.rotation.x = Math.PI / 2;
-    goldenCrown.position.y = 152;
-    monumentGroup.add(goldenCrown);
+    crown.rotation.x = Math.PI / 2;
+    crown.position.set(0, 122, 0);
+    scene.add(crown);
 
-    const beaconLight = new THREE.PointLight(0x00f0ff, 3, 140);
-    beaconLight.position.set(0, 160, 0);
-    monumentGroup.add(beaconLight);
-    scene.add(monumentGroup);
-
-    // --- VEÍCULOS (CARRO E AVIÃO COM VOO CONTÍNUO) ---
-    // 1. CAR MODEL (Cyber Rover)
-    const carGroup = new THREE.Group();
-    const chassis = new THREE.Mesh(
-      new THREE.BoxGeometry(4.6, 1.5, 8.5),
-      new THREE.MeshStandardMaterial({ color: 0x122247, roughness: 0.2, metalness: 0.9 })
-    );
-    chassis.position.y = 1.3;
-    carGroup.add(chassis);
-
-    const cabin = new THREE.Mesh(
-      new THREE.BoxGeometry(3.4, 1.4, 4.2),
-      new THREE.MeshStandardMaterial({ color: 0x00f0ff, opacity: 0.85, transparent: true })
-    );
-    cabin.position.set(0, 2.4, -0.5);
-    carGroup.add(cabin);
-
-    // Faróis de Neon
-    const carHeadlightL = new THREE.SpotLight(0x00f0ff, 5, 110, Math.PI / 4, 0.3);
-    carHeadlightL.position.set(-1.8, 1.4, -4.2);
-    carHeadlightL.target.position.set(-1.8, 0, -35);
-    carGroup.add(carHeadlightL);
-    carGroup.add(carHeadlightL.target);
-
-    const carHeadlightR = carHeadlightL.clone();
-    carHeadlightR.position.x = 1.8;
-    carHeadlightR.target.position.x = 1.8;
-    carGroup.add(carHeadlightR);
-    carGroup.add(carHeadlightR.target);
-
-    for (let wx of [-2.3, 2.3]) {
-      for (let wz of [-2.5, 2.5]) {
-        const wheel = new THREE.Mesh(
-          new THREE.CylinderGeometry(1.0, 1.0, 0.8, 16),
-          new THREE.MeshStandardMaterial({ color: 0x050a14, roughness: 0.8 })
-        );
-        wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(wx, 1.0, wz);
-        carGroup.add(wheel);
-      }
-    }
-    carGroup.position.set(0, 0, 40);
-    scene.add(carGroup);
-
-    // 2. PLANE MODEL (Cyber Jet - Cruzeiro Contínuo)
+    // --- AVIÃO VISÍVEL DE CIMA (CYBER JET BRANCO E CYAN) ---
     const planeGroup = new THREE.Group();
+
+    // Fuselagem
     const fuselage = new THREE.Mesh(
-      new THREE.ConeGeometry(1.8, 12, 8),
-      new THREE.MeshStandardMaterial({ color: 0x142854, roughness: 0.2, metalness: 0.9 })
+      new THREE.ConeGeometry(2.4, 15, 8),
+      new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2, metalness: 0.6 })
     );
     fuselage.rotation.x = -Math.PI / 2;
+    fuselage.castShadow = true;
     planeGroup.add(fuselage);
 
+    // Asas
     const wings = new THREE.Mesh(
-      new THREE.BoxGeometry(16, 0.3, 4.2),
-      new THREE.MeshStandardMaterial({ color: 0x00f0ff, roughness: 0.3, metalness: 0.8 })
+      new THREE.BoxGeometry(22, 0.4, 5.5),
+      new THREE.MeshStandardMaterial({ color: 0x0284c7, roughness: 0.3 })
     );
-    wings.position.set(0, 0, 1.0);
+    wings.position.set(0, 0, 1.2);
+    wings.castShadow = true;
     planeGroup.add(wings);
 
     // Turbinas
-    const thrusterL = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.8, 3.5, 12), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
-    thrusterL.rotation.x = Math.PI / 2;
-    thrusterL.position.set(-2.4, 0, 4.5);
-    planeGroup.add(thrusterL);
+    const tL = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 4.5, 12), new THREE.MeshStandardMaterial({ color: 0x334155 }));
+    tL.rotation.x = Math.PI / 2;
+    tL.position.set(-3.2, 0, 5);
+    planeGroup.add(tL);
 
-    const thrusterR = thrusterL.clone();
-    thrusterR.position.x = 2.4;
-    planeGroup.add(thrusterR);
+    const tR = tL.clone();
+    tR.position.x = 3.2;
+    planeGroup.add(tR);
 
-    // Posição inicial do avião (Já voando alto sobre a cidade)
-    planeGroup.position.set(0, 45, 120);
+    // Feixe / Laser Rastreador Projetado no Chão (Destaca o dia onde você está voando)
+    const beam = new THREE.Mesh(
+      new THREE.RingGeometry(8, 9.5, 32),
+      new THREE.MeshBasicMaterial({ color: 0x0284c7, side: THREE.DoubleSide })
+    );
+    beam.rotation.x = -Math.PI / 2;
+    beam.position.y = 0.2;
+    scene.add(beam);
+
+    // POSIÇÃO INICIAL DO AVIÃO (ALTO NO CÉU PARA VISÃO AÉREA COMPLETA)
+    let planeAlt = 135; // 135 metros de altura!
+    planeGroup.position.set(0, planeAlt, 160);
     scene.add(planeGroup);
 
-    // Começar no modo Avião por padrão
-    let currentVehicle = 'plane';
-    carGroup.visible = false;
-    planeGroup.visible = true;
-
-    // --- CONTROLE DE TECLADO E ESTADO ---
-    let cameraMode = 'third';
+    // --- CONTROLES DE VOO E CÂMERA AÉREA DE CIMA ---
+    let camMode = 'aerial'; // 'aerial' (bem de cima) ou 'iso' (isométrica)
     const keys = { w: false, a: false, s: false, d: false, space: false, shift: false };
 
     window.addEventListener('keydown', (e) => {
@@ -548,8 +543,6 @@
       if (k === 'd' || k === 'arrowright') keys.d = true;
       if (e.code === 'Space') keys.space = true;
       if (k === 'shift') keys.shift = true;
-      if (k === 'v') toggleVehicleMode();
-      if (k === 'c') toggleCameraView();
     });
 
     window.addEventListener('keyup', (e) => {
@@ -562,42 +555,17 @@
       if (k === 'shift') keys.shift = false;
     });
 
-    function setVehicleMode(mode) {
-      initAudio();
-      currentVehicle = mode;
-      document.getElementById('mode-car').className = mode === 'car' ? 'hud-btn active' : 'hud-btn';
-      document.getElementById('mode-plane').className = mode === 'plane' ? 'hud-btn active' : 'hud-btn';
-
-      if (mode === 'car') {
-        carGroup.visible = true;
-        planeGroup.visible = false;
-        carGroup.position.set(planeGroup.position.x, 0, planeGroup.position.z);
-        carGroup.rotation.y = planeGroup.rotation.y;
-      } else {
-        carGroup.visible = false;
-        planeGroup.visible = true;
-        planeGroup.position.set(carGroup.position.x, 40, carGroup.position.z);
-        planeGroup.rotation.y = carGroup.rotation.y;
-        planeAltitude = 40; // Mantém altitude de cruzeiro
-      }
-      playBeep(520, 0.12);
-    }
-    function toggleVehicleMode() {
-      setVehicleMode(currentVehicle === 'car' ? 'plane' : 'car');
+    function setCamAngle(mode) {
+      camMode = mode;
+      document.getElementById('camera-btn').className = mode === 'aerial' ? 'hud-btn active' : 'hud-btn';
+      document.getElementById('cam-iso-btn').className = mode === 'iso' ? 'hud-btn active' : 'hud-btn';
     }
 
-    function toggleCameraView() {
-      cameraMode = cameraMode === 'third' ? 'first' : 'third';
-      document.getElementById('camera-btn').innerText = cameraMode === 'third' ? '🎥 CÂMERA: 3ª PESSOA' : '🎥 CÂMERA: 1ª PESSOA';
-    }
-
-    // Variáveis de voo contínuo
-    let planeSpeed = 1.6; // Velocidade de cruzeiro permanente!
-    let planeAltitude = 40;
+    // Voo de cruzeiro permanente
+    let planeSpeed = 1.6;
     let planeRoll = 0;
-    let carSpeed = 0;
 
-    // --- PROXIMIDADE E HUD HOLOGRÁFICO DOS COMMITS ---
+    // --- HUD HOLOGRÁFICO POR PROXIMIDADE AÉREA ---
     const holoCard = document.getElementById('holo-card');
     const holoTag = document.getElementById('holo-tag');
     const holoCommits = document.getElementById('holo-commits');
@@ -605,11 +573,11 @@
     const holoDesc = document.getElementById('holo-desc');
     const holoMeta = document.getElementById('holo-meta');
     const holoLink = document.getElementById('holo-link');
-    let currentNearbyBuilding = null;
+    let currentDayDetected = null;
 
-    function checkProximity(pos) {
+    function checkDayProximity(pos) {
       let nearest = null;
-      let minDist = currentVehicle === 'plane' ? 45 : 28;
+      let minDist = 40;
 
       for (let b of commitBuildings) {
         const d = Math.hypot(pos.x - b.position.x, pos.z - b.position.z);
@@ -620,8 +588,8 @@
       }
 
       if (nearest) {
-        if (currentNearbyBuilding !== nearest.day) {
-          currentNearbyBuilding = nearest.day;
+        if (currentDayDetected !== nearest.day) {
+          currentDayDetected = nearest.day;
           holoTag.innerText = nearest.district;
           holoCommits.innerText = nearest.commits === 0 ? "DESCANSO / PLANEJAMENTO" : `⚡ ${nearest.commits} COMMITS`;
           holoTitle.innerText = nearest.day;
@@ -629,145 +597,111 @@
           holoMeta.innerHTML = `🧪 ESCOPO: Testes de Automação & Garantia de Qualidade<br>📊 RESULTADO: ${nearest.commits > 0 ? "Casos de Teste Aprovados // Cobertura Expandida" : "Análise e Refinamento de Requisitos"}`;
           holoLink.href = nearest.link;
           holoCard.classList.add('visible');
-          playBeep(650, 0.1);
+          playBeep(720, 0.08);
         }
       } else {
-        if (currentNearbyBuilding) {
-          currentNearbyBuilding = null;
+        if (currentDayDetected) {
+          currentDayDetected = null;
           holoCard.classList.remove('visible');
         }
       }
     }
 
-    // --- RADAR MINI-MAP ---
+    // --- RADAR MINI MAP ---
     const radarCanvas = document.getElementById('radar-canvas');
     const radarCtx = radarCanvas.getContext('2d');
 
     function updateRadar(pos, heading) {
-      radarCtx.clearRect(0, 0, 140, 140);
-      const cx = 70, cy = 70;
-      const scale = 0.14;
+      radarCtx.clearRect(0, 0, 145, 145);
+      const cx = 72, cy = 72;
+      const scale = 0.12;
 
-      radarCtx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
-      radarCtx.lineWidth = 1;
+      radarCtx.strokeStyle = 'rgba(2, 132, 199, 0.4)';
+      radarCtx.lineWidth = 1.5;
       radarCtx.beginPath();
-      radarCtx.arc(cx, cy, 65, 0, Math.PI * 2);
+      radarCtx.arc(cx, cy, 68, 0, Math.PI * 2);
       radarCtx.stroke();
       radarCtx.beginPath();
-      radarCtx.arc(cx, cy, 35, 0, Math.PI * 2);
+      radarCtx.arc(cx, cy, 38, 0, Math.PI * 2);
       radarCtx.stroke();
 
-      // Desenhar Centros dos Distritos
       districtCenters.forEach(d => {
         const rx = cx + (d.x - pos.x) * scale;
         const ry = cy + (d.z - pos.z) * scale;
-        if (Math.hypot(rx - cx, ry - cy) < 62) {
-          radarCtx.fillStyle = '#00f0ff';
+        if (Math.hypot(rx - cx, ry - cy) < 65) {
+          radarCtx.fillStyle = '#0284c7';
           radarCtx.beginPath();
           radarCtx.arc(rx, ry, 3.5, 0, Math.PI * 2);
           radarCtx.fill();
         }
       });
 
-      // Seta do Veículo
+      // Seta do Avião
       radarCtx.save();
       radarCtx.translate(cx, cy);
       radarCtx.rotate(-heading + Math.PI);
-      radarCtx.fillStyle = '#ffffff';
+      radarCtx.fillStyle = '#0284c7';
       radarCtx.beginPath();
-      radarCtx.moveTo(0, -7);
-      radarCtx.lineTo(4, 5);
-      radarCtx.lineTo(-4, 5);
+      radarCtx.moveTo(0, -9);
+      radarCtx.lineTo(5, 6);
+      radarCtx.lineTo(-5, 6);
       radarCtx.closePath();
       radarCtx.fill();
       radarCtx.restore();
     }
 
-    // --- LOOP DE ANIMAÇÃO ---
+    // --- LOOP DE VOO E ANIMAÇÃO ---
     const clock = new THREE.Clock();
 
     function animate() {
       requestAnimationFrame(animate);
       const dt = clock.getDelta();
 
-      goldenCrown.rotation.z += 0.4 * dt;
+      crown.rotation.z += 0.3 * dt;
 
-      let pos = new THREE.Vector3();
-      let heading = 0;
+      // Velocidade de cruzeiro permanente
+      if (keys.w) planeSpeed = Math.min(planeSpeed + 1.5 * dt, 2.8);
+      else if (keys.s) planeSpeed = Math.max(planeSpeed - 1.5 * dt, 1.0);
+      else planeSpeed = THREE.MathUtils.lerp(planeSpeed, 1.6, 0.05);
 
-      // 1. CARRO
-      if (currentVehicle === 'car') {
-        const maxCarSpeed = keys.space ? 2.5 : 1.6;
-        const accel = 2.0 * dt;
+      // Curvas A / D
+      const turnSpeed = 2.0 * dt;
+      if (keys.a) { planeGroup.rotation.y += turnSpeed; planeRoll = Math.min(planeRoll + 0.1, 0.45); }
+      else if (keys.d) { planeGroup.rotation.y -= turnSpeed; planeRoll = Math.max(planeRoll - 0.1, -0.45); }
+      else { planeRoll *= 0.88; }
 
-        if (keys.w) carSpeed = Math.min(carSpeed + accel, maxCarSpeed);
-        else if (keys.s) carSpeed = Math.max(carSpeed - accel, -maxCarSpeed * 0.5);
-        else carSpeed *= 0.95;
+      // Altitude (Espaço Sobe, Shift Desce, e Soltando Mantém a Altura de Cruzeiro!)
+      if (keys.space) {
+        planeAlt += 30 * dt;
+      } else if (keys.shift) {
+        planeAlt = Math.max(planeAlt - 26 * dt, 35);
+      }
+      planeGroup.position.y = THREE.MathUtils.lerp(planeGroup.position.y, planeAlt, 0.1);
 
-        const steerRate = 2.6 * dt;
-        if (keys.a) carGroup.rotation.y += steerRate;
-        if (keys.d) carGroup.rotation.y -= steerRate;
+      planeGroup.rotation.z = planeRoll;
+      planeGroup.translateZ(-planeSpeed);
 
-        carGroup.translateZ(-carSpeed);
-        pos.copy(carGroup.position);
-        heading = carGroup.rotation.y;
+      // Atualiza o anel rastreador no chão diretamente embaixo do avião
+      beam.position.set(planeGroup.position.x, 0.25, planeGroup.position.z);
 
-        if (cameraMode === 'third') {
-          const camOffset = new THREE.Vector3(0, 10, 24).applyAxisAngle(new THREE.Vector3(0, 1, 0), carGroup.rotation.y);
-          camera.position.lerp(carGroup.position.clone().add(camOffset), 0.1);
-          camera.lookAt(carGroup.position.clone().add(new THREE.Vector3(0, 2, 0)));
-        } else {
-          camera.position.copy(carGroup.position).add(new THREE.Vector3(0, 2.8, -0.6));
-          const target = carGroup.position.clone().add(new THREE.Vector3(0, 2, -35).applyAxisAngle(new THREE.Vector3(0, 1, 0), carGroup.rotation.y));
-          camera.lookAt(target);
-        }
-
-        document.getElementById('speed-val').innerText = Math.abs(Math.round(carSpeed * 80));
+      // --- CÂMERA BEM DE CIMA (VISÃO AÉREA DE PÁSSARO / ISOMÉTRICA) ---
+      if (camMode === 'aerial') {
+        // Câmera muito alta, inclinada a 55° para baixo olhando para os quarteirões e tetos dos dias
+        const camOffset = new THREE.Vector3(0, 95, 75).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y);
+        camera.position.lerp(planeGroup.position.clone().add(camOffset), 0.1);
+        camera.lookAt(planeGroup.position.clone().add(new THREE.Vector3(0, -10, -35).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y)));
+      } else {
+        // Isométrica diagonal
+        const camOffset = new THREE.Vector3(80, 80, 80);
+        camera.position.lerp(planeGroup.position.clone().add(camOffset), 0.1);
+        camera.lookAt(planeGroup.position);
       }
 
-      // 2. AVIÃO (MECÂNICA DE VOO CONTÍNUO: NÃO CAI AO SOLTAR ESPAÇO!)
-      else {
-        // Velocidade constante de cruzeiro permanente
-        if (keys.w) planeSpeed = Math.min(planeSpeed + 1.2 * dt, 2.8);
-        else if (keys.s) planeSpeed = Math.max(planeSpeed - 1.2 * dt, 1.2);
-        else planeSpeed = THREE.MathUtils.lerp(planeSpeed, 1.7, 0.05);
+      document.getElementById('alt-val').innerText = Math.round(planeGroup.position.y);
+      document.getElementById('speed-val').innerText = Math.round(planeSpeed * 105);
 
-        // Curvas suaves (A e D)
-        const turnSpeed = 2.0 * dt;
-        if (keys.a) { planeGroup.rotation.y += turnSpeed; planeRoll = Math.min(planeRoll + 0.1, 0.45); }
-        else if (keys.d) { planeGroup.rotation.y -= turnSpeed; planeRoll = Math.max(planeRoll - 0.1, -0.45); }
-        else { planeRoll *= 0.88; }
-
-        // Altitude: Espaço SOBE, Shift DESCE, e SOLTANDO MANTÉM CONSTANTE!
-        if (keys.space) {
-          planeAltitude += 28 * dt;
-        } else if (keys.shift) {
-          planeAltitude = Math.max(planeAltitude - 24 * dt, 12);
-        }
-        // Aplica altitude suavemente
-        planeGroup.position.y = THREE.MathUtils.lerp(planeGroup.position.y, planeAltitude, 0.1);
-
-        planeGroup.rotation.z = planeRoll;
-        planeGroup.translateZ(-planeSpeed);
-        pos.copy(planeGroup.position);
-        heading = planeGroup.rotation.y;
-
-        // Câmera do Avião
-        if (cameraMode === 'third') {
-          const camOffset = new THREE.Vector3(0, 15, 38).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y);
-          camera.position.lerp(planeGroup.position.clone().add(camOffset), 0.12);
-          camera.lookAt(planeGroup.position.clone().add(new THREE.Vector3(0, 2, -15).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y)));
-        } else {
-          camera.position.copy(planeGroup.position).add(new THREE.Vector3(0, 1.6, -1.8));
-          const target = planeGroup.position.clone().add(new THREE.Vector3(0, 1, -50).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y));
-          camera.lookAt(target);
-        }
-
-        document.getElementById('speed-val').innerText = Math.round(planeSpeed * 110);
-      }
-
-      checkProximity(pos);
-      updateRadar(pos, heading);
+      checkDayProximity(planeGroup.position);
+      updateRadar(planeGroup.position, planeGroup.rotation.y);
 
       renderer.render(scene, camera);
     }
