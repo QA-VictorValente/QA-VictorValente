@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>QA DevCity 3D | Victor Valente QA Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: #05070e; font-family: 'Rajdhani', sans-serif; color: #fff; }
+    #canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+
+    /* HUD OVERLAYS */
+    .hud-layer { position: absolute; z-index: 10; pointer-events: none; }
+    
+    /* Top Header */
+    .top-bar {
+      top: 16px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .brand-box {
+      background: rgba(8, 12, 24, 0.85);
+      border: 1px solid #00f0ff;
+      border-left: 5px solid #00f0ff;
+      padding: 10px 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+    }
+    .brand-title {
+      font-size: 20px; font-weight: 700; color: #00f0ff; letter-spacing: 2px; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .brand-sub { font-size: 13px; color: #8892b0; font-family: 'Fira Code', monospace; }
+    
+    .top-actions { display: flex; gap: 10px; pointer-events: auto; }
+    .hud-btn {
+      background: rgba(13, 17, 33, 0.85);
+      border: 1px solid #00f0ff;
+      color: #00f0ff;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .hud-btn:hover {
+      background: #00f0ff; color: #05070e; box-shadow: 0 0 15px #00f0ff;
+    }
+    .hud-btn.active {
+      background: #00f0ff; color: #05070e;
+    }
+
+    /* Radar Mini-Map */
+    .radar-box {
+      top: 95px; left: 20px;
+      width: 140px; height: 140px;
+      background: rgba(8, 12, 24, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+    }
+    #radar-canvas { width: 100%; height: 100%; }
+
+    /* Speedometer & Vehicle Toggle (Bottom Left) */
+    .vehicle-hud {
+      bottom: 25px; left: 20px;
+      background: rgba(8, 12, 24, 0.85);
+      border: 1px solid #00f0ff;
+      padding: 12px 18px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: auto;
+    }
+    .speed-display { font-family: 'Fira Code', monospace; font-size: 26px; font-weight: 700; color: #00f0ff; }
+    .speed-unit { font-size: 12px; color: #8892b0; margin-left: 4px; }
+    .mode-switch-group { display: flex; gap: 8px; }
+
+    /* Proximity Hologram Card (Bottom Right) */
+    .holo-card {
+      bottom: 25px; right: 25px;
+      width: 380px;
+      background: rgba(7, 10, 22, 0.92);
+      border: 1px solid #00f0ff;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 15px rgba(0, 240, 255, 0.1);
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      transform: translateX(450px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+      opacity: 0;
+      pointer-events: auto;
+    }
+    .holo-card.visible {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    .holo-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #05070e;
+      background: #00f0ff;
+      padding: 3px 8px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-family: 'Fira Code', monospace;
+    }
+    .holo-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; letter-spacing: 1px; }
+    .holo-desc { font-size: 14px; color: #ccd6f6; line-height: 1.4; margin-bottom: 12px; }
+    .holo-meta {
+      background: rgba(0, 240, 255, 0.05);
+      border-left: 3px solid #00f0ff;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      color: #64ffda;
+    }
+    .holo-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .holo-pill {
+      background: #111a33; border: 1px solid #1f2f5c; color: #82aaff;
+      font-size: 11px; padding: 3px 8px; border-radius: 3px; font-family: 'Fira Code', monospace;
+    }
+    .holo-link {
+      display: block; text-align: center; background: #00f0ff; color: #05070e;
+      text-decoration: none; font-weight: 700; padding: 10px; font-size: 14px; letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .holo-link:hover { background: #64ffda; box-shadow: 0 0 15px #64ffda; }
+
+    /* Controls Helper */
+    .controls-hint {
+      bottom: 25px; left: 50%; transform: translateX(-50%);
+      background: rgba(8, 12, 24, 0.8);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 8px 18px;
+      font-size: 13px;
+      color: #8892b0;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      gap: 16px;
+      pointer-events: none;
+    }
+    .controls-hint span { color: #00f0ff; font-weight: 600; }
+
+    /* Crosshair in flight mode */
+    .crosshair {
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 24px; height: 24px;
+      border: 1px dashed rgba(0, 240, 255, 0.5);
+      border-radius: 50%;
+      display: none;
+      pointer-events: none;
+    }
+    .crosshair.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+
+  <!-- TOP BAR -->
+  <div class="hud-layer top-bar">
+    <div class="brand-box">
+      <div class="brand-title">🏙️ QA DevCity 3D</div>
+      <div class="brand-sub">Victor Valente // Test Automation & Quality Engineering</div>
+    </div>
+    <div class="top-actions">
+      <button id="sound-btn" class="hud-btn" onclick="toggleSound()">🔊 SOM: ON</button>
+      <button id="camera-btn" class="hud-btn" onclick="toggleCameraView()">🎥 CÂMERA: 3ª PESSOA</button>
+      <a href="https://github.com/QA-VictorValente" target="_blank" class="hud-btn">⭐ GITHUB PROFILE</a>
+    </div>
+  </div>
+
+  <!-- RADAR MINI MAP -->
+  <div class="hud-layer radar-box">
+    <canvas id="radar-canvas" width="140" height="140"></canvas>
+  </div>
+
+  <!-- VEHICLE SWITCH & SPEEDOMETER -->
+  <div class="hud-layer vehicle-hud">
+    <div>
+      <span class="speed-display" id="speed-val">0</span>
+      <span class="speed-unit">KM/H</span>
+    </div>
+    <div class="mode-switch-group">
+      <button id="mode-car" class="hud-btn active" onclick="setVehicleMode('car')">🚗 CARRO</button>
+      <button id="mode-plane" class="hud-btn" onclick="setVehicleMode('plane')">✈️ AVIÃO</button>
+    </div>
+  </div>
+
+  <!-- HOLOGRAPHIC PROXIMITY CARD -->
+  <div id="holo-card" class="hud-layer holo-card">
+    <div id="holo-tag" class="holo-tag">TOWER 01</div>
+    <div id="holo-title" class="holo-title">Nome do Edifício</div>
+    <div id="holo-desc" class="holo-desc">Descrição detalhada do escopo e projeto.</div>
+    <div id="holo-meta" class="holo-meta">STATUS: 100% PASSING</div>
+    <div id="holo-badges" class="holo-badges">
+      <span class="holo-pill">Cypress</span>
+    </div>
+    <a id="holo-link" href="#" target="_blank" class="holo-link">EXPLORAR REPOSITÓRIO NO GITHUB ➔</a>
+  </div>
+
+  <!-- CONTROLS HINT -->
+  <div class="hud-layer controls-hint">
+    <div><span>WASD / Setas</span>: Conduzir</div>
+    <div><span>Espaço</span>: Turbo / Subir</div>
+    <div><span>Shift</span>: Freio / Descer</div>
+    <div><span>V</span>: Trocar Veículo (Carro / Avião)</div>
+  </div>
+
+  <div id="crosshair" class="hud-layer crosshair"></div>
+
+  <!-- THREE.JS & SIMULATION LOGIC -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // --- AUDIO SYNTHESIS VIA WEB AUDIO API ---
+    let audioCtx = null;
+    let soundEnabled = true;
+    let engineOsc = null, engineGain = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        engineOsc = audioCtx.createOscillator();
+        engineGain = audioCtx.createGain();
+        engineOsc.type = 'sawtooth';
+        engineOsc.frequency.setValueAtTime(60, audioCtx.currentTime);
+        engineGain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+        engineOsc.connect(engineGain);
+        engineGain.connect(audioCtx.destination);
+        engineOsc.start();
+      }
+    }
+    function playBeep(freq = 880, dur = 0.08) {
+      if (!soundEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        g.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(g);
+        g.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch(e){}
+    }
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-btn').innerText = soundEnabled ? '🔊 SOM: ON' : '🔇 SOM: MUTE';
+      if (engineGain) engineGain.gain.setValueAtTime(soundEnabled ? 0.015 : 0, audioCtx.currentTime);
+    }
+
+    // --- THREE.JS SCENE SETUP ---
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x05070e);
+    scene.fog = new THREE.FogExp2(0x05070e, 0.0055);
+
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1500);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    // --- LIGHTING ---
+    const ambientLight = new THREE.AmbientLight(0x1a2540, 1.2);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0x00f0ff, 0.8);
+    dirLight.position.set(100, 200, 100);
+    scene.add(dirLight);
+
+    const purpleLight = new THREE.DirectionalLight(0xb026ff, 0.5);
+    purpleLight.position.set(-100, 150, -100);
+    scene.add(purpleLight);
+
+    // --- GROUND & HIGHWAY GRID ---
+    const groundGeo = new THREE.PlaneGeometry(1200, 1200);
+    const groundMat = new THREE.MeshStandardMaterial({
+      color: 0x060813,
+      roughness: 0.8,
+      metalness: 0.5
+    });
+    const ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+
+    const gridHelper = new THREE.GridHelper(1200, 80, 0x00f0ff, 0x111c38);
+    gridHelper.position.y = 0.05;
+    scene.add(gridHelper);
+
+    // Neon Highway Roads
+    function createRoad(x, z, width, length, isRotated) {
+      const roadGeo = new THREE.PlaneGeometry(width, length);
+      const roadMat = new THREE.MeshBasicMaterial({ color: 0x090d1f });
+      const road = new THREE.Mesh(roadGeo, roadMat);
+      road.rotation.x = -Math.PI / 2;
+      if (isRotated) road.rotation.z = Math.PI / 2;
+      road.position.set(x, 0.08, z);
+      scene.add(road);
+
+      // Glowing Cyan Centerline
+      const lineGeo = new THREE.PlaneGeometry(0.6, length);
+      const lineMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      const line = new THREE.Mesh(lineGeo, lineMat);
+      line.rotation.x = -Math.PI / 2;
+      if (isRotated) line.rotation.z = Math.PI / 2;
+      line.position.set(x, 0.09, z);
+      scene.add(line);
+    }
+    createRoad(0, 0, 14, 1000, false);
+    createRoad(0, 0, 14, 1000, true);
+    createRoad(-120, 0, 10, 800, false);
+    createRoad(120, 0, 10, 800, false);
+    createRoad(0, -120, 10, 800, true);
+    createRoad(0, 120, 10, 800, true);
+
+    // --- LANDMARK TECH TOWERS (UNIQUE ARCHITECTURES) ---
+    const landmarkTowers = [
+      {
+        id: "playwright",
+        tag: "E2E CITADEL // POM TOWER",
+        name: "Playwright E2E Saucedemo Tower",
+        desc: "Arranha-céu hexagonal de testes ponta a ponta com TypeScript, arquitetura Page Object Model (POM), relatórios dinâmicos e cobertura cross-browser.",
+        meta: "STATUS: 100% SUITES PASSING // HIGH STABILITY",
+        badges: ["Playwright", "TypeScript", "POM", "E2E Testing", "Saucedemo"],
+        link: "https://github.com/QA-VictorValente/qa-web-playwright-saucedemo",
+        pos: { x: -65, z: -65 },
+        color: 0x2ead33,
+        accent: 0x00f0ff,
+        builder: buildHexCitadel
+      },
+      {
+        id: "cypress",
+        tag: "E2E MATRIX // NETWORK MOCKING",
+        name: "Cypress Conduit Matrix Hub",
+        desc: "Complexo de automação com Cypress, arquitetura orientada a App Actions, Network Mocking estrito com cy.intercept e validação de fluxos complexos.",
+        meta: "STATUS: CONTINUOUS INTEGRATION VERIFIED",
+        badges: ["Cypress", "App Actions", "cy.intercept", "Network Mocking", "Conduit"],
+        link: "https://github.com/QA-VictorValente/qa-web-cypress-conduit",
+        pos: { x: 65, z: -65 },
+        color: 0x00f0ff,
+        accent: 0x17202c,
+        builder: buildMatrixTower
+      },
+      {
+        id: "k6",
+        tag: "PERFORMANCE // LOAD REACTOR",
+        name: "k6 Grafana Stress Reactor",
+        desc: "Reator cilíndrico de performance e estresse contra a API ServeRest com estágios graduais (stages), verificação estrita de SLAs de latência e p95.",
+        meta: "SLA: p95 < 250ms // ZERO CRASHES",
+        badges: ["Grafana k6", "Performance Testing", "Stress Tests", "SLAs", "JavaScript"],
+        link: "https://github.com/QA-VictorValente/qa-perf-k6-serverest",
+        pos: { x: -65, z: 65 },
+        color: 0x7d64ff,
+        accent: 0xff0055,
+        builder: buildReactorTower
+      },
+      {
+        id: "api",
+        tag: "CONTRACTS // ZOD VALIDATOR",
+        name: "ServeRest API Contract Spire",
+        desc: "Torre de validação de contratos e esquemas de dados de endpoints REST utilizando Playwright API e validações estritas de schema com Zod.",
+        meta: "SCHEMA VALIDATION: 100% COMPLIANT",
+        badges: ["Playwright API", "Zod Schema", "REST API", "Postman", "Contract Testing"],
+        link: "https://github.com/QA-VictorValente/qa-api-playwright-serverest",
+        pos: { x: 65, z: 65 },
+        color: 0xff6c37,
+        accent: 0x00f0ff,
+        builder: buildSpireTower
+      },
+      {
+        id: "ctfl",
+        tag: "FOUNDATION // ISTQB MONUMENT",
+        name: "ISTQB CTFL Academy Spire",
+        desc: "Monumento central à maturidade de Qualidade de Software. Plataforma de preparação para a certificação oficial internacional ISTQB CTFL v4.0.1.",
+        meta: "MATURITY: CERTIFIED QUALITY STANDARD",
+        badges: ["ISTQB CTFL v4.0.1", "Next.js", "QA Engineering", "Test Management"],
+        link: "https://github.com/QA-VictorValente/CTFL-Academy",
+        pos: { x: 0, z: -150 },
+        color: 0xffd700,
+        accent: 0x00f0ff,
+        builder: buildAcademyMonument
+      }
+    ];
+
+    const towerMeshes = [];
+
+    // Helper: Glowing Beacon Light
+    function addBeacon(group, x, y, z, color) {
+      const light = new THREE.PointLight(color, 2.5, 90);
+      light.position.set(x, y, z);
+      group.add(light);
+      const orb = new THREE.Mesh(
+        new THREE.SphereGeometry(1.8, 16, 16),
+        new THREE.MeshBasicMaterial({ color: color })
+      );
+      orb.position.set(x, y, z);
+      group.add(orb);
+    }
+
+    // Builder 1: Hexagonal Stepped Citadel (Playwright)
+    function buildHexCitadel(pos, color, accent) {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0, pos.z);
+      
+      const tiers = [
+        { r: 18, h: 25, y: 12.5 },
+        { r: 14, h: 35, y: 42.5 },
+        { r: 9, h: 45, y: 82.5 },
+        { r: 4, h: 30, y: 120 }
+      ];
+      tiers.forEach(t => {
+        const geo = new THREE.CylinderGeometry(t.r * 0.85, t.r, t.h, 6);
+        const mat = new THREE.MeshStandardMaterial({
+          color: 0x0e1424,
+          roughness: 0.3,
+          metalness: 0.8
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.y = t.y;
+        group.add(mesh);
+
+        // Neon Edge Ring
+        const ringGeo = new THREE.RingGeometry(t.r * 0.86, t.r * 0.98, 6);
+        const ringMat = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = t.y + t.h / 2 + 0.1;
+        group.add(ring);
+      });
+      addBeacon(group, 0, 137, 0, color);
+      scene.add(group);
+      return group;
+    }
+
+    // Builder 2: Matrix Grid Block Tower (Cypress)
+    function buildMatrixTower(pos, color, accent) {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0, pos.z);
+
+      const h = 110;
+      const geo = new THREE.BoxGeometry(26, h, 26);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x080e1e, roughness: 0.2, metalness: 0.9 });
+      const tower = new THREE.Mesh(geo, mat);
+      tower.position.y = h / 2;
+      group.add(tower);
+
+      // Glowing Data Slices
+      for(let y = 15; y < h; y += 18) {
+        const slice = new THREE.Mesh(
+          new THREE.BoxGeometry(26.6, 1.8, 26.6),
+          new THREE.MeshBasicMaterial({ color: color })
+        );
+        slice.position.y = y;
+        group.add(slice);
+      }
+      addBeacon(group, 0, h + 2, 0, color);
+      scene.add(group);
+      return group;
+    }
+
+    // Builder 3: Cylindrical Reactor Tower (k6 Performance)
+    function buildReactorTower(pos, color, accent) {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0, pos.z);
+
+      const h = 95;
+      const coreGeo = new THREE.CylinderGeometry(14, 18, h, 24);
+      const coreMat = new THREE.MeshStandardMaterial({ color: 0x120824, roughness: 0.4, metalness: 0.7 });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      core.position.y = h / 2;
+      group.add(core);
+
+      // Pulsating Rings
+      const ringGroup = new THREE.Group();
+      for(let y = 10; y < h; y += 14) {
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(17, 0.7, 12, 32),
+          new THREE.MeshBasicMaterial({ color: color })
+        );
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = y;
+        ringGroup.add(ring);
+      }
+      group.add(ringGroup);
+      group.userData.rings = ringGroup;
+      addBeacon(group, 0, h + 3, 0, color);
+      scene.add(group);
+      return group;
+    }
+
+    // Builder 4: Multi-segment Spire (API ServeRest)
+    function buildSpireTower(pos, color, accent) {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0, pos.z);
+
+      const h = 120;
+      const geo = new THREE.ConeGeometry(16, h, 4);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x1f0f08, roughness: 0.3, metalness: 0.8 });
+      const spire = new THREE.Mesh(geo, mat);
+      spire.position.y = h / 2;
+      spire.rotation.y = Math.PI / 4;
+      group.add(spire);
+
+      // Glowing Antennas
+      const antenna = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.5, 0.5, 30, 8),
+        new THREE.MeshBasicMaterial({ color: color })
+      );
+      antenna.position.y = h + 15;
+      group.add(antenna);
+      addBeacon(group, 0, h + 30, 0, color);
+      scene.add(group);
+      return group;
+    }
+
+    // Builder 5: Central Monument (CTFL Academy)
+    function buildAcademyMonument(pos, color, accent) {
+      const group = new THREE.Group();
+      group.position.set(pos.x, 0, pos.z);
+
+      const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(26, 32, 18, 8),
+        new THREE.MeshStandardMaterial({ color: 0x141829, roughness: 0.2, metalness: 0.9 })
+      );
+      base.position.y = 9;
+      group.add(base);
+
+      const pillarH = 140;
+      const pillar = new THREE.Mesh(
+        new THREE.CylinderGeometry(10, 16, pillarH, 8),
+        new THREE.MeshStandardMaterial({ color: 0x0a1020, roughness: 0.1, metalness: 0.95 })
+      );
+      pillar.position.y = pillarH / 2 + 18;
+      group.add(pillar);
+
+      // Crown Rings
+      const crown = new THREE.Mesh(
+        new THREE.TorusGeometry(18, 1.4, 16, 32),
+        new THREE.MeshBasicMaterial({ color: color })
+      );
+      crown.rotation.x = Math.PI / 2;
+      crown.position.y = pillarH + 18;
+      group.add(crown);
+      group.userData.crown = crown;
+
+      addBeacon(group, 0, pillarH + 24, 0, color);
+      scene.add(group);
+      return group;
+    }
+
+    // Instantiate Landmarks
+    landmarkTowers.forEach(t => {
+      const mesh = t.builder(t.pos, t.color, t.accent);
+      mesh.userData.info = t;
+      towerMeshes.push(mesh);
+    });
+
+    // --- DAILY COMMIT HOUSES & METROPOLIS DISTRICTS ---
+    // Generating 52 cyber residential sectors (Commit pods representing days of the year)
+    const commitPods = [];
+    const podMaterialLow = new THREE.MeshStandardMaterial({ color: 0x091326, roughness: 0.5, metalness: 0.6 });
+    const podMaterialMid = new THREE.MeshStandardMaterial({ color: 0x0a263d, roughness: 0.3, metalness: 0.8 });
+    const podMaterialHigh = new THREE.MeshStandardMaterial({ color: 0x093d38, roughness: 0.2, metalness: 0.9 });
+
+    for (let col = -12; col <= 12; col++) {
+      for (let row = -6; row <= 6; row++) {
+        // Skip central highway zones
+        if (Math.abs(col) < 3 || Math.abs(row) < 3) continue;
+
+        const x = col * 26 + (Math.random() - 0.5) * 6;
+        const z = row * 26 + (Math.random() - 0.5) * 6;
+
+        // Skip landmark positions
+        let nearLandmark = false;
+        for (let t of landmarkTowers) {
+          const d = Math.hypot(x - t.pos.x, z - t.pos.z);
+          if (d < 35) { nearLandmark = true; break; }
+        }
+        if (nearLandmark) continue;
+
+        // Commit intensity
+        const commitCount = Math.floor(Math.random() * 8) + 1;
+        const podH = 6 + commitCount * 4.5;
+        const podW = 8 + Math.random() * 4;
+
+        let mat = podMaterialLow;
+        let roofColor = 0x1f4068;
+        if (commitCount > 3) { mat = podMaterialMid; roofColor = 0x00f0ff; }
+        if (commitCount > 6) { mat = podMaterialHigh; roofColor = 0x39d353; }
+
+        const pod = new THREE.Mesh(new THREE.BoxGeometry(podW, podH, podW), mat);
+        pod.position.set(x, podH / 2, z);
+        scene.add(pod);
+
+        // Glowing roof indicator (The Cyber House Roof)
+        const roof = new THREE.Mesh(
+          new THREE.PlaneGeometry(podW * 0.9, podW * 0.9),
+          new THREE.MeshBasicMaterial({ color: roofColor })
+        );
+        roof.rotation.x = -Math.PI / 2;
+        roof.position.set(x, podH + 0.05, z);
+        scene.add(roof);
+
+        pod.userData.commitData = {
+          date: `Dia ${Math.abs(col * 7 + row) % 365 + 1} do Ano`,
+          commits: commitCount,
+          verified: "Qualidade Garantida 100%"
+        };
+        commitPods.push(pod);
+      }
+    }
+
+    // --- VEHICLES (CARRO & AVIÃO) ---
+    // 1. CAR MODEL (Cyber Rover)
+    const carGroup = new THREE.Group();
+    // Chassis
+    const chassis = new THREE.Mesh(
+      new THREE.BoxGeometry(4.2, 1.4, 7.5),
+      new THREE.MeshStandardMaterial({ color: 0x0a1020, roughness: 0.2, metalness: 0.9 })
+    );
+    chassis.position.y = 1.3;
+    carGroup.add(chassis);
+
+    // Cabin
+    const cabin = new THREE.Mesh(
+      new THREE.BoxGeometry(3.2, 1.2, 3.8),
+      new THREE.MeshStandardMaterial({ color: 0x00f0ff, roughness: 0.1, metalness: 0.8, opacity: 0.8, transparent: true })
+    );
+    cabin.position.set(0, 2.3, -0.4);
+    carGroup.add(cabin);
+
+    // Glowing Neon Headlights
+    const carHeadlightL = new THREE.SpotLight(0x00f0ff, 4, 90, Math.PI / 5, 0.4);
+    carHeadlightL.position.set(-1.6, 1.3, -3.8);
+    carHeadlightL.target.position.set(-1.6, 0, -25);
+    carGroup.add(carHeadlightL);
+    carGroup.add(carHeadlightL.target);
+
+    const carHeadlightR = new THREE.SpotLight(0x00f0ff, 4, 90, Math.PI / 5, 0.4);
+    carHeadlightR.position.set(1.6, 1.3, -3.8);
+    carHeadlightR.target.position.set(1.6, 0, -25);
+    carGroup.add(carHeadlightR);
+    carGroup.add(carHeadlightR.target);
+
+    // Wheels
+    for (let wx of [-2.1, 2.1]) {
+      for (let wz of [-2.2, 2.2]) {
+        const wheel = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.9, 0.9, 0.7, 16),
+          new THREE.MeshStandardMaterial({ color: 0x020408, roughness: 0.8 })
+        );
+        wheel.rotation.z = Math.PI / 2;
+        wheel.position.set(wx, 0.9, wz);
+        carGroup.add(wheel);
+      }
+    }
+    carGroup.position.set(0, 0, 80);
+    scene.add(carGroup);
+
+    // 2. PLANE / DRONE MODEL (Cyber Jet)
+    const planeGroup = new THREE.Group();
+    // Fuselage
+    const fuselage = new THREE.Mesh(
+      new THREE.ConeGeometry(1.6, 10, 8),
+      new THREE.MeshStandardMaterial({ color: 0x0a1020, roughness: 0.2, metalness: 0.9 })
+    );
+    fuselage.rotation.x = -Math.PI / 2;
+    planeGroup.add(fuselage);
+
+    // Wings
+    const wings = new THREE.Mesh(
+      new THREE.BoxGeometry(14, 0.25, 3.8),
+      new THREE.MeshStandardMaterial({ color: 0x00f0ff, roughness: 0.3, metalness: 0.8 })
+    );
+    wings.position.set(0, 0, 0.8);
+    planeGroup.add(wings);
+
+    // Jet Thrusters
+    const jetL = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 3, 12), new THREE.MeshBasicMaterial({ color: 0x00f0ff }));
+    jetL.rotation.x = Math.PI / 2;
+    jetL.position.set(-2.2, 0, 4);
+    planeGroup.add(jetL);
+
+    const jetR = jetL.clone();
+    jetR.position.x = 2.2;
+    planeGroup.add(jetR);
+
+    planeGroup.visible = false;
+    scene.add(planeGroup);
+
+    // --- CONTROLS & PHYSICS STATE ---
+    let currentVehicle = 'car'; // 'car' or 'plane'
+    let cameraMode = 'third'; // 'third' or 'first'
+    const keys = { w: false, a: false, s: false, d: false, space: false, shift: false };
+
+    window.addEventListener('keydown', (e) => {
+      initAudio();
+      const k = e.key.toLowerCase();
+      if (k === 'w' || k === 'arrowup') keys.w = true;
+      if (k === 's' || k === 'arrowdown') keys.s = true;
+      if (k === 'a' || k === 'arrowleft') keys.a = true;
+      if (k === 'd' || k === 'arrowright') keys.d = true;
+      if (e.code === 'Space') keys.space = true;
+      if (k === 'shift') keys.shift = true;
+      if (k === 'v') toggleVehicleMode();
+      if (k === 'c') toggleCameraView();
+    });
+
+    window.addEventListener('keyup', (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'w' || k === 'arrowup') keys.w = false;
+      if (k === 's' || k === 'arrowdown') keys.s = false;
+      if (k === 'a' || k === 'arrowleft') keys.a = false;
+      if (k === 'd' || k === 'arrowright') keys.d = false;
+      if (e.code === 'Space') keys.space = false;
+      if (k === 'shift') keys.shift = false;
+    });
+
+    function setVehicleMode(mode) {
+      initAudio();
+      currentVehicle = mode;
+      document.getElementById('mode-car').className = mode === 'car' ? 'hud-btn active' : 'hud-btn';
+      document.getElementById('mode-plane').className = mode === 'plane' ? 'hud-btn active' : 'hud-btn';
+      document.getElementById('crosshair').className = mode === 'plane' ? 'hud-layer crosshair active' : 'hud-layer crosshair';
+
+      if (mode === 'car') {
+        carGroup.visible = true;
+        planeGroup.visible = false;
+        carGroup.position.set(planeGroup.position.x, 0, planeGroup.position.z);
+        carGroup.rotation.y = planeGroup.rotation.y;
+      } else {
+        carGroup.visible = false;
+        planeGroup.visible = true;
+        planeGroup.position.set(carGroup.position.x, 25, carGroup.position.z);
+        planeGroup.rotation.y = carGroup.rotation.y;
+      }
+      playBeep(440, 0.15);
+    }
+    function toggleVehicleMode() {
+      setVehicleMode(currentVehicle === 'car' ? 'plane' : 'car');
+    }
+
+    function toggleCameraView() {
+      cameraMode = cameraMode === 'third' ? 'first' : 'third';
+      document.getElementById('camera-btn').innerText = cameraMode === 'third' ? '🎥 CÂMERA: 3ª PESSOA' : '🎥 CÂMERA: 1ª PESSOA';
+    }
+
+    // Vehicle physics state
+    let carSpeed = 0, carSteer = 0;
+    let planeSpeed = 0, planePitch = 0, planeRoll = 0;
+
+    // --- PROXIMITY HUD CARD LOGIC ---
+    const holoCard = document.getElementById('holo-card');
+    const holoTag = document.getElementById('holo-tag');
+    const holoTitle = document.getElementById('holo-title');
+    const holoDesc = document.getElementById('holo-desc');
+    const holoMeta = document.getElementById('holo-meta');
+    const holoBadges = document.getElementById('holo-badges');
+    const holoLink = document.getElementById('holo-link');
+    let currentNearbyTower = null;
+
+    function checkProximity(playerPos) {
+      let nearest = null;
+      let minDist = 38;
+
+      for (let t of towerMeshes) {
+        const d = Math.hypot(playerPos.x - t.position.x, playerPos.z - t.position.z);
+        if (d < minDist) {
+          nearest = t.userData.info;
+          minDist = d;
+        }
+      }
+
+      if (nearest) {
+        if (currentNearbyTower !== nearest.id) {
+          currentNearbyTower = nearest.id;
+          holoTag.innerText = nearest.tag;
+          holoTitle.innerText = nearest.name;
+          holoDesc.innerText = nearest.desc;
+          holoMeta.innerText = nearest.meta;
+          holoLink.href = nearest.link;
+          holoBadges.innerHTML = nearest.badges.map(b => `<span class="holo-pill">${b}</span>`).join('');
+          holoCard.classList.add('visible');
+          playBeep(700, 0.12);
+        }
+      } else {
+        if (currentNearbyTower) {
+          currentNearbyTower = null;
+          holoCard.classList.remove('visible');
+        }
+      }
+    }
+
+    // --- RADAR MINI-MAP DRAWING ---
+    const radarCanvas = document.getElementById('radar-canvas');
+    const radarCtx = radarCanvas.getContext('2d');
+
+    function updateRadar(playerPos, heading) {
+      radarCtx.clearRect(0, 0, 140, 140);
+      const cx = 70, cy = 70;
+      const scale = 0.22;
+
+      // Radar sweep circle
+      radarCtx.strokeStyle = 'rgba(0, 240, 255, 0.25)';
+      radarCtx.lineWidth = 1;
+      radarCtx.beginPath();
+      radarCtx.arc(cx, cy, 65, 0, Math.PI * 2);
+      radarCtx.stroke();
+      radarCtx.beginPath();
+      radarCtx.arc(cx, cy, 35, 0, Math.PI * 2);
+      radarCtx.stroke();
+
+      // Draw Landmark Towers
+      landmarkTowers.forEach(t => {
+        const rx = cx + (t.pos.x - playerPos.x) * scale;
+        const ry = cy + (t.pos.z - playerPos.z) * scale;
+        if (Math.hypot(rx - cx, ry - cy) < 62) {
+          radarCtx.fillStyle = '#00f0ff';
+          radarCtx.beginPath();
+          radarCtx.arc(rx, ry, 4, 0, Math.PI * 2);
+          radarCtx.fill();
+        }
+      });
+
+      // Player Arrow at center
+      radarCtx.save();
+      radarCtx.translate(cx, cy);
+      radarCtx.rotate(-heading + Math.PI);
+      radarCtx.fillStyle = '#ffffff';
+      radarCtx.beginPath();
+      radarCtx.moveTo(0, -7);
+      radarCtx.lineTo(4, 5);
+      radarCtx.lineTo(-4, 5);
+      radarCtx.closePath();
+      radarCtx.fill();
+      radarCtx.restore();
+    }
+
+    // --- ANIMATION LOOP ---
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+      const time = clock.getElapsedTime();
+
+      // Rotate tower elements (reactor rings, academy crown)
+      towerMeshes.forEach(t => {
+        if (t.userData.rings) t.userData.rings.rotation.y += 0.8 * dt;
+        if (t.userData.crown) t.userData.crown.rotation.z += 0.5 * dt;
+      });
+
+      let playerPos = new THREE.Vector3();
+      let heading = 0;
+
+      // 1. CAR PHYSICS
+      if (currentVehicle === 'car') {
+        const maxCarSpeed = keys.space ? 2.4 : 1.5;
+        const accel = 1.6 * dt;
+        const friction = 0.94;
+
+        if (keys.w) carSpeed = Math.min(carSpeed + accel, maxCarSpeed);
+        else if (keys.s) carSpeed = Math.max(carSpeed - accel, -maxCarSpeed * 0.5);
+        else carSpeed *= friction;
+
+        const steerSpeed = 2.4 * dt;
+        if (keys.a) carGroup.rotation.y += steerSpeed * (carSpeed >= 0 ? 1 : -1);
+        if (keys.d) carGroup.rotation.y -= steerSpeed * (carSpeed >= 0 ? 1 : -1);
+
+        carGroup.translateZ(-carSpeed);
+        playerPos.copy(carGroup.position);
+        heading = carGroup.rotation.y;
+
+        // Camera follow
+        if (cameraMode === 'third') {
+          const camOffset = new THREE.Vector3(0, 9, 22).applyAxisAngle(new THREE.Vector3(0, 1, 0), carGroup.rotation.y);
+          camera.position.lerp(carGroup.position.clone().add(camOffset), 0.1);
+          camera.lookAt(carGroup.position.clone().add(new THREE.Vector3(0, 2.5, 0)));
+        } else {
+          // First person
+          camera.position.copy(carGroup.position).add(new THREE.Vector3(0, 2.8, -0.6));
+          const target = carGroup.position.clone().add(new THREE.Vector3(0, 2.5, -30).applyAxisAngle(new THREE.Vector3(0, 1, 0), carGroup.rotation.y));
+          camera.lookAt(target);
+        }
+
+        document.getElementById('speed-val').innerText = Math.abs(Math.round(carSpeed * 75));
+        if (engineOsc && soundEnabled) engineOsc.frequency.setValueAtTime(45 + Math.abs(carSpeed) * 60, audioCtx.currentTime);
+      }
+
+      // 2. PLANE PHYSICS
+      else {
+        const maxPlaneSpeed = keys.shift ? 3.5 : 2.0;
+        const accel = 1.8 * dt;
+        if (keys.w) planeSpeed = Math.min(planeSpeed + accel, maxPlaneSpeed);
+        else if (keys.s) planeSpeed = Math.max(planeSpeed - accel, 0.4);
+        else planeSpeed = Math.max(planeSpeed * 0.98, 0.5);
+
+        const steerRate = 2.0 * dt;
+        if (keys.a) { planeGroup.rotation.y += steerRate; planeRoll = Math.min(planeRoll + 0.1, 0.4); }
+        else if (keys.d) { planeGroup.rotation.y -= steerRate; planeRoll = Math.max(planeRoll - 0.1, -0.4); }
+        else { planeRoll *= 0.85; }
+
+        // Altitude
+        if (keys.space) planeGroup.position.y += 35 * dt;
+        if (keys.shift) planeGroup.position.y = Math.max(planeGroup.position.y - 25 * dt, 8);
+
+        planeGroup.rotation.z = planeRoll;
+        planeGroup.translateZ(-planeSpeed);
+        playerPos.copy(planeGroup.position);
+        heading = planeGroup.rotation.y;
+
+        // Camera follow
+        if (cameraMode === 'third') {
+          const camOffset = new THREE.Vector3(0, 14, 34).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y);
+          camera.position.lerp(planeGroup.position.clone().add(camOffset), 0.1);
+          camera.lookAt(planeGroup.position.clone().add(new THREE.Vector3(0, 3, 0)));
+        } else {
+          camera.position.copy(planeGroup.position).add(new THREE.Vector3(0, 1.5, -2));
+          const target = planeGroup.position.clone().add(new THREE.Vector3(0, 1, -40).applyAxisAngle(new THREE.Vector3(0, 1, 0), planeGroup.rotation.y));
+          camera.lookAt(target);
+        }
+
+        document.getElementById('speed-val').innerText = Math.round(planeSpeed * 120);
+        if (engineOsc && soundEnabled) engineOsc.frequency.setValueAtTime(80 + planeSpeed * 70, audioCtx.currentTime);
+      }
+
+      checkProximity(playerPos);
+      updateRadar(playerPos, heading);
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Window Resize
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

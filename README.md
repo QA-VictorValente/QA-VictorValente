@@ -125,26 +125,44 @@
 
 ---
 
-### 🏙️ DevCity 3D: A Metrópole dos Commits
+### 🏙️ QA DevCity 3D: A Metrópole dos Commits
 
 <div align="center">
 
-> *"Cada commit ergue um andar. Cada push constrói uma avenida na metrópole do código."* 🏢⚡
+> *"Cada commit ergue um andar. Cada push constrói uma avenida na metrópole de Quality Assurance."* 🏢⚡
 
 <p align="center">
-  <a href="https://honzaap.github.io/GithubCity/?name=QA-VictorValente" target="_blank" title="Clique para explorar sua cidade 3D interativa gerada a partir dos seus commits">
-    <img src="./profile-3d-contrib/profile-night-view.svg" onerror="this.onerror=null; this.src='https://ghchart.rshah.org/00F0FF/QA-VictorValente';" alt="3D Contribution City - Victor Valente" width="100%" />
+  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank" title="Clique para entrar na cidade 3D interativa">
+    <img src="assets/devcity-banner.svg" alt="QA DevCity 3D - Victor Valente" width="100%" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://honzaap.github.io/GithubCity/?name=QA-VictorValente" target="_blank">
-    <img src="https://img.shields.io/badge/🏙️%20Explorar%20Minha%20Cidade%203D%20(WebGL)-00F0FF?style=for-the-badge&logoColor=000&labelColor=0d1117" alt="Explorar Cidade 3D" />
+  <a href="https://qa-victorvalente.github.io/QA-VictorValente/" target="_blank">
+    <img src="https://img.shields.io/badge/🎮%20ENTRAR%20NA%20CIDADE%203D%20INTERATIVA%20(WEBGL)-00F0FF?style=for-the-badge&logoColor=000&labelColor=0d1117" alt="Entrar na Cidade 3D" />
   </a>
 </p>
 
-<sub>💡 Dica: No GitCity você pode explorar a cidade em 3D, ver prédios baseados na altura dos seus commits e até dirigir pelas ruas!</sub>
+</div>
 
+#### 🕹️ O que você encontra na simulação 3D:
+- 🚗 **Pilote um Cyber Rover pelas avenidas** ou aperte `V` para **decolar um Cyber Jet e sobrevoar os prédios**!
+- 🏢 **Torres Tecnológicas Únicas:**
+  - **Playwright Citadel**: Arquitetura hexagonal com anéis de neon, representando testes E2E com Page Object Model (POM).
+  - **Cypress Matrix Hub**: Cubo tecnológico com feixes de dados, focado em App Actions e Network Mocking.
+  - **k6 Stress Reactor**: Reator de energia pulsante dedicado a testes de estresse, carga e SLAs de latência.
+  - **API Contract Spire**: Agulha futurista com antenas de transmissão de validação de schemas Zod e REST.
+  - **ISTQB CTFL Academy**: Monumento central à maturidade de Qualidade e governança de software.
+- 📡 **HUD Holográfico por Proximação:** Ao se aproximar de qualquer edifício com o carro ou o avião, um painel holográfico se abre na tela revelando métricas de teste, tecnologias utilizadas e botão direto para o código no GitHub.
+- 🏘️ **Casas de Commits Diários:** Quadras inteiras formadas por módulos residenciais onde a altura e a cor de cada casa representam a intensidade de commits de cada dia do ano!
+
+---
+
+### 🟩 Histórico Contínuo de Commits (365 Dias)
+
+<div align="center">
+  <img src="https://ghchart.rshah.org/00F0FF/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
+  <p><sub>Atualizado dinamicamente em tempo real a cada novo commit realizado. ⚡</sub></p>
 </div>
 
 ---
