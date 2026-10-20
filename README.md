@@ -13,11 +13,9 @@
     <a href="https://www.linkedin.com/in/victor-valente-59a3161a4/" target="_blank">
       <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
     </a>
-    <a href="mailto:victorvalente456@gmail.com">
-      <img src="https://img.shields.io/badge/Email-victorvalente456%40gmail.com-00F0FF?style=for-the-badge&logo=gmail&logoColor=000&labelColor=0d1117" alt="Email" />
+    <a href="mailto:victorvalente456@gmail.com?subject=Contato%20Profissional%20-%20QA%20Victor%20Valente">
+      <img src="https://img.shields.io/badge/Email-00F0FF?style=for-the-badge&logo=gmail&logoColor=000&labelColor=0d1117" alt="Email" />
     </a>
-    <img src="https://img.shields.io/badge/Location-Fortaleza%2C%20CE%20--%20Brazil-00FF66?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Localização" />
-    <img src="https://img.shields.io/badge/Status-Open%20to%20Opportunities-brightgreen?style=for-the-badge" alt="Status" />
   </p>
 
 </div>
@@ -112,7 +110,7 @@
 
 ---
 
-### 📊 Métricas & Atividade no GitHub
+### 📊 Métricas & Desempenho
 
 <div align="center">
 
@@ -121,8 +119,17 @@
 
   <br/><br/>
 
-  <img height="155em" src="https://github-readme-streak-stats.herokuapp.com/?user=QA-VictorValente&theme=tokyonight&border=00F0FF&border_radius=8" alt="GitHub Streak" />
+  <img height="155em" src="https://streak-stats.demolab.com?user=QA-VictorValente&theme=tokyonight&border=00F0FF&border_radius=8" alt="GitHub Streak" />
 
+</div>
+
+---
+
+### 🟩 Gráfico de Contribuições & Atividade Contínua
+
+<div align="center">
+  <p><sub>Atualizado dinamicamente em tempo real a cada commit realizado ⚡</sub></p>
+  <img src="https://ghchart.rshah.org/00F0FF/QA-VictorValente" alt="Gráfico de Contribuições de Victor Valente" />
 </div>
 
 ---
